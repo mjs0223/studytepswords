@@ -1,0 +1,4881 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#2563eb" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="TEPS Vocab Master" />
+  <title>TEPS Vocab Master | 텝스 맞춤형 예문 기반 영단어 암기 프로그램</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+  
+  <style>
+/* ==========================================================================
+   TEPS Vocab Master - Modern Minimalist Stylesheet
+   Enhanced with Etymology, Synonyms/Antonyms, Korean Meaning Highlights & Cloud Sync
+   ========================================================================== */
+
+:root {
+  /* Color Palette - Light Mode */
+  --bg-primary: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #ffffff;
+  --bg-secondary: #f1f5f9;
+  --bg-tertiary: #e2e8f0;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-tertiary: #64748b;
+  --text-invert: #ffffff;
+
+  --border-light: #e2e8f0;
+  --border-medium: #cbd5e1;
+
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #eff6ff;
+  --primary-border: #bfdbfe;
+
+  --accent-highlight: #fef08a; /* Soft highlighter yellow */
+  --accent-highlight-text: #854d0e;
+  --accent-highlight-border: #fde047;
+
+  --kr-badge-bg: #ecfdf5;
+  --kr-badge-text: #065f46;
+  --kr-badge-border: #a7f3d0;
+
+  --synonym-bg: #f0fdf4;
+  --synonym-text: #166534;
+  --antonym-bg: #fef2f2;
+  --antonym-text: #991b1b;
+
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-drawer: 0 -10px 25px -5px rgb(0 0 0 / 0.15);
+
+  --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Newsreader", "Georgia", "Cambria", serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0b0f19;
+  --bg-surface: #111827;
+  --bg-surface-elevated: #1f2937;
+  --bg-secondary: #1a2234;
+  --bg-tertiary: #2a3449;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #64748b;
+  --text-invert: #0f172a;
+
+  --border-light: #1e293b;
+  --border-medium: #334155;
+
+  --primary: #3b82f6;
+  --primary-hover: #60a5fa;
+  --primary-light: #1e293b;
+  --primary-border: #2563eb;
+
+  --accent-highlight: #713f12;
+  --accent-highlight-text: #fef08a;
+  --accent-highlight-border: #a16207;
+
+  --kr-badge-bg: #064e3b;
+  --kr-badge-text: #6ee7b7;
+  --kr-badge-border: #047857;
+
+  --synonym-bg: #064e3b;
+  --synonym-text: #86efac;
+  --antonym-bg: #450a0a;
+  --antonym-text: #fca5a5;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.5);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.6);
+  --shadow-drawer: 0 -12px 30px -5px rgb(0 0 0 / 0.7);
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  padding-bottom: 90px;
+}
+
+.app-container {
+  max-width: 980px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   Header & Toolbar
+   ========================================================================== */
+.app-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #2563eb, #8b5cf6);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.brand-text h1 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* User Account Sync Button (Requirement 4) */
+.btn-user-sync {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-user-sync:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-border);
+  color: var(--primary);
+}
+
+.btn-user-sync.logged-in {
+  background: var(--kr-badge-bg);
+  border-color: var(--kr-badge-border);
+  color: var(--kr-badge-text);
+}
+
+.btn-icon {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-icon:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+/* Difficulty Toolbar (Requirement 5) */
+.teps-toolbar {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.toolbar-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toolbar-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.level-badge-current {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.level-desc-tooltip {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.level-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--bg-secondary);
+  padding: 0.25rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-light);
+}
+
+.level-chip {
+  background: transparent;
+  border: none;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.level-chip:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.level-chip.active {
+  background: var(--bg-surface);
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.level-arrow-btn {
+  background: transparent;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.level-arrow-btn:hover:not(:disabled) {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.level-arrow-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Hero & Google Search Interface (Requirement 2)
+   ========================================================================== */
+.hero-section {
+  padding: 2.5rem 0 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: padding var(--transition-normal);
+}
+
+.hero-section.compact {
+  padding: 1rem 0 0.8rem;
+}
+
+.hero-title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.4rem;
+  background: linear-gradient(135deg, var(--text-primary) 30%, var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  max-width: 580px;
+  margin-bottom: 1.6rem;
+}
+
+.search-box-container {
+  width: 100%;
+  max-width: 700px;
+  position: relative;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-full);
+  padding: 0.5rem 0.75rem 0.5rem 1.25rem;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  transition: all var(--transition-normal);
+}
+
+.search-bar:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15), 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.search-icon {
+  color: var(--text-tertiary);
+  margin-right: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+.clear-btn {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-btn.visible {
+  display: flex;
+}
+
+.clear-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+.search-submit-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-full);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all var(--transition-fast);
+  margin-left: 0.5rem;
+}
+
+.search-submit-btn:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+}
+
+.suggested-chips {
+  margin-top: 1.1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.suggested-label {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  font-weight: 600;
+  margin-right: 0.25rem;
+}
+
+.suggest-chip {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.suggest-chip:hover {
+  border-color: var(--primary-border);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+/* ==========================================================================
+   Active Word Overview Card (Requirements 2 & 3: Korean Meaning & Details)
+   ========================================================================== */
+.active-word-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.8rem;
+  margin-bottom: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  box-shadow: var(--shadow-md);
+  animation: fadeIn 0.3s ease;
+}
+
+.word-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.word-main-title-group {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.current-target-word {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.word-ipa {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--text-tertiary);
+}
+
+.word-pos {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--primary-border);
+}
+
+/* Highlighted Korean Meaning Badge (Requirement 2) */
+.word-kr-badge-large {
+  display: inline-flex;
+  align-items: center;
+  background: var(--kr-badge-bg);
+  color: var(--kr-badge-text);
+  border: 1px solid var(--kr-badge-border);
+  font-size: 1.25rem;
+  font-weight: 800;
+  padding: 0.35rem 1rem;
+  border-radius: var(--radius-md);
+  letter-spacing: -0.01em;
+}
+
+.word-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btn-secondary {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all var(--transition-fast);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+/* Expanded Word Details Block (Root, Forms, Synonyms, Antonyms) */
+.word-detailed-meta {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border: 1px solid var(--border-light);
+}
+
+.meta-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.meta-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  min-width: 90px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.meta-content {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.chips-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip-tag {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+
+.chip-tag.synonym {
+  background: var(--synonym-bg);
+  color: var(--synonym-text);
+  border: 1px solid rgba(22, 101, 52, 0.2);
+}
+
+.chip-tag.antonym {
+  background: var(--antonym-bg);
+  color: var(--antonym-text);
+  border: 1px solid rgba(153, 27, 27, 0.2);
+}
+
+/* ==========================================================================
+   Sentence List & Sentence Cards (Requirement 3: Korean Highlighted)
+   ========================================================================== */
+.sentences-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.sentences-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sentences-header-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sentence-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.4rem 1.6rem;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  position: relative;
+  overflow: hidden;
+  animation: slideUp 0.35s ease backwards;
+}
+
+.sentence-card:hover {
+  border-color: var(--border-medium);
+  box-shadow: var(--shadow-md);
+}
+
+.card-top-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.domain-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Target Word Meaning Reminder on each card */
+.card-target-reminder {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+}
+
+.card-actions-quick {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.action-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-tertiary);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.action-icon-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+.sentence-en-box {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+.token-word {
+  display: inline-block;
+  cursor: pointer;
+  padding: 0 0.15rem;
+  border-radius: 4px;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+  position: relative;
+}
+
+.token-word:hover {
+  background-color: rgba(37, 99, 235, 0.12);
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.target-highlight {
+  background-color: var(--accent-highlight) !important;
+  color: var(--accent-highlight-text) !important;
+  border: 1px solid var(--accent-highlight-border);
+  font-weight: 700;
+  padding: 0.1rem 0.35rem !important;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.sentence-kr-box {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1.1rem;
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--transition-normal);
+  border: 1px dashed var(--border-medium);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sentence-kr-box:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--primary-border);
+}
+
+.kr-toggle-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.sentence-kr-text {
+  font-size: 0.98rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Word Detail Popover (Requirement 1: Prominent Korean Meaning)
+   ========================================================================== */
+.word-popover {
+  position: absolute;
+  z-index: 999;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xl);
+  padding: 1.1rem 1.25rem;
+  min-width: 280px;
+  max-width: 360px;
+  animation: scaleFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.popover-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.popover-word {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.popover-ipa {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  color: var(--text-tertiary);
+}
+
+/* Large Prominent Korean Definition Box */
+.popover-kr-box {
+  background: var(--kr-badge-bg);
+  border: 1px solid var(--kr-badge-border);
+  color: var(--kr-badge-text);
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.popover-forms-row {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  background: var(--bg-secondary);
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+}
+
+.popover-add-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: background-color var(--transition-fast);
+}
+
+.popover-add-btn:hover {
+  background: var(--primary-hover);
+}
+
+/* ==========================================================================
+   Bottom Folded Notebook & Detailed Word View (Requirement 3 & 7 & 8)
+   ========================================================================== */
+.notebook-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.notebook-tab-handle {
+  pointer-events: auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-bottom: none;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 0.65rem 1.6rem;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all var(--transition-fast);
+  transform: translateY(2px);
+}
+
+.notebook-tab-handle:hover {
+  background: var(--bg-secondary);
+  transform: translateY(0);
+}
+
+.notebook-tab-icon {
+  font-size: 1.1rem;
+}
+
+.notebook-tab-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.notebook-count-badge {
+  background: var(--primary);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.notebook-sheet {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 980px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-bottom: none;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: var(--shadow-drawer);
+  height: 0;
+  overflow: hidden;
+  transition: height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.notebook-sheet.open {
+  height: 480px;
+}
+
+.notebook-header {
+  padding: 0.9rem 1.4rem;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-secondary);
+}
+
+.notebook-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.notebook-header-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.notebook-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.notebook-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.notebook-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text-tertiary);
+  gap: 0.5rem;
+  padding: 2rem 0;
+}
+
+/* Enhanced Vocab Item Card with Accordion Detail (Requirement 3) */
+.vocab-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-fast);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.vocab-item:hover {
+  border-color: var(--border-medium);
+}
+
+.vocab-item.removing {
+  animation: fadeOutSlide 0.4s ease forwards;
+}
+
+.vocab-item-top {
+  padding: 0.85rem 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+  background: var(--bg-surface);
+}
+
+.vocab-item-top:hover {
+  background: var(--bg-secondary);
+}
+
+.vocab-item-main {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+}
+
+.checkbox-3state {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 2px solid var(--border-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: var(--bg-surface);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.checkbox-3state:hover {
+  border-color: var(--primary);
+}
+
+.checkbox-3state.unlearned {
+  border-color: var(--border-medium);
+}
+
+.checkbox-3state.learning {
+  border-color: var(--warning);
+  background: rgba(245, 158, 11, 0.15);
+}
+
+.checkbox-3state.learning::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: var(--warning);
+  border-radius: 2px;
+}
+
+.checkbox-3state.mastered {
+  border-color: var(--success);
+  background: var(--success);
+  color: white;
+}
+
+.vocab-word-info {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.vocab-word-text {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.vocab-word-ipa {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  color: var(--text-tertiary);
+}
+
+/* Clear Korean Meaning in Vocab List */
+.vocab-word-kr-badge {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--kr-badge-text);
+  background: var(--kr-badge-bg);
+  border: 1px solid var(--kr-badge-border);
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-sm);
+}
+
+.vocab-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-detail-toggle {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all var(--transition-fast);
+}
+
+.btn-detail-toggle:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-color: var(--primary-border);
+}
+
+.btn-generate-direct {
+  background: var(--primary);
+  color: white;
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: background-color var(--transition-fast);
+}
+
+.btn-generate-direct:hover {
+  background: var(--primary-hover);
+}
+
+/* Accordion Detail Area in Vocab Card (Requirement 3: Root, Forms, Synonyms, Antonyms) */
+.vocab-item-detail {
+  padding: 0.9rem 1.1rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-light);
+  display: none;
+  flex-direction: column;
+  gap: 0.6rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.vocab-item-detail.open {
+  display: flex;
+}
+
+/* ==========================================================================
+   Modals (Settings & Account Login/Register)
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  padding: 1.8rem;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  animation: scaleFadeIn 0.25s ease;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.auth-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border-light);
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.auth-tab {
+  background: none;
+  border: none;
+  padding: 0.5rem 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  position: relative;
+}
+
+.auth-tab.active {
+  color: var(--primary);
+}
+
+.auth-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.form-input {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--primary);
+}
+
+.form-hint {
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
+  padding: 0.75rem 1.1rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  animation: toastSlideIn 0.3s ease;
+  pointer-events: auto;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOutSlide {
+  to {
+    opacity: 0;
+    transform: translateX(30px);
+    height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 1.6rem;
+  }
+  .teps-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .level-stepper {
+    overflow-x: auto;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .notebook-sheet.open {
+    height: 480px;
+  }
+}
+
+</style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header with TEPS Toolbar, Sync & Settings -->
+    <header class="app-header">
+      <div class="header-top">
+        <a href="#" class="brand" id="brandResetBtn" title="메인 화면으로">
+          <div class="brand-logo">T</div>
+          <div class="brand-text">
+            <h1>TEPS Vocab Master</h1>
+          </div>
+        </a>
+
+        <div class="header-actions">
+          <!-- Account Sync Button (Requirement 4) -->
+          <button class="btn-user-sync" id="userSyncBtn" title="계정 로그인 및 기기 간 동기화">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span id="userSyncText">로그인 / 동기화</span>
+          </button>
+
+          <!-- Light / Dark Mode Toggle (Requirement 1) -->
+          <button class="btn-icon" id="themeToggleBtn" title="라이트/다크모드 전환" aria-label="Toggle theme">
+            <svg id="themeIconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg id="themeIconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+
+          <!-- Settings Button -->
+          <button class="btn-icon" id="openSettingsBtn" title="설정" aria-label="Settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- TEPS Score Difficulty Toolbar -->
+      <div class="teps-toolbar">
+        <div class="toolbar-info">
+          <span class="toolbar-label">목표 난이도</span>
+          <span class="level-badge-current" id="currentLevelBadge">TEPS 327 ★</span>
+          <span class="level-desc-tooltip" id="levelDescription">대학원/전문연 기준: 정제된 논리적 복문</span>
+        </div>
+
+        <div class="level-stepper">
+          <button class="level-arrow-btn" id="prevLevelBtn" title="점수 내리기" aria-label="Decrease Level">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          
+          <button class="level-chip" data-level="250">250</button>
+          <button class="level-chip active" data-level="327">327 (기본)</button>
+          <button class="level-chip" data-level="387">387</button>
+          <button class="level-chip" data-level="450">450</button>
+          <button class="level-chip" data-level="500">500+</button>
+
+          <button class="level-arrow-btn" id="nextLevelBtn" title="점수 올리기" aria-label="Increase Level">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+      <!-- Hero Section & Google-like Search Bar -->
+      <section class="hero-section" id="heroSection">
+        <h2 class="hero-title">문맥으로 각인되는 텝스 영단어</h2>
+        <p class="hero-subtitle">단어만 외우지 마세요. 5개 전문 분야의 텝스 기출 스타일 예문 속에서 자연스럽게 체득됩니다.</p>
+
+        <div class="search-box-container">
+          <form id="searchForm" class="search-bar" autocomplete="off">
+            <div class="search-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              id="wordInput" 
+              class="search-input" 
+              placeholder="암기할 영단어를 입력하세요 (예: alleviate, scrutinize, ambiguous)" 
+              required
+              autofocus
+            />
+            <button type="button" id="clearInputBtn" class="clear-btn" title="입력 지우기">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <button type="submit" class="search-submit-btn" id="submitSearchBtn">
+              <span>예문 생성</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </form>
+
+          <!-- Suggested TEPS Chips -->
+          <div class="suggested-chips">
+            <span class="suggested-label">텝스 빈출 추천:</span>
+            <button class="suggest-chip" data-word="alleviate">alleviate</button>
+            <button class="suggest-chip" data-word="conspicuous">conspicuous</button>
+            <button class="suggest-chip" data-word="meticulous">meticulous</button>
+            <button class="suggest-chip" data-word="pervasive">pervasive</button>
+            <button class="suggest-chip" data-word="resilient">resilient</button>
+            <button class="suggest-chip" data-word="lucrative">lucrative</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Active Word Summary Card (Requirements 2 & 3: Korean Meaning, Root, Forms, Synonyms, Antonyms) -->
+      <section id="activeWordSection" style="display: none;">
+        <div class="active-word-card">
+          <div class="word-card-header">
+            <div class="word-main-title-group">
+              <span class="current-target-word" id="currentWordHeading">alleviate</span>
+              <span class="word-ipa" id="currentWordIpa">/əˈliː.vi.eɪt/</span>
+              <span class="word-pos" id="currentWordPos">v.</span>
+              <!-- Prominent Korean Meaning Badge (Requirement 2) -->
+              <span class="word-kr-badge-large" id="currentWordKr">완화하다, 경감시키다</span>
+            </div>
+
+            <div class="word-actions">
+              <button class="btn-secondary" id="playAudioBtn" title="원어민 발음 듣기">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                <span>발음</span>
+              </button>
+              <button class="btn-secondary" id="addToNotebookBtn" title="단어장에 추가">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                <span>단어장 저장</span>
+              </button>
+              <button class="btn-secondary" id="regenerateBtn" title="새로운 예문 5개 다시 생성">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                <span>새 예문 생성</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Word Details Meta Box (Requirement 3: Root, Forms, Synonyms, Antonyms) -->
+          <div class="word-detailed-meta">
+            <div class="meta-row">
+              <span class="meta-label">🌱 어근 / 어원</span>
+              <span class="meta-content" id="currentWordRoot" style="font-weight: 600; color: var(--primary);">-</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">🔄 파생 형태</span>
+              <span class="meta-content" id="currentWordForms" style="font-size: 0.85rem; color: var(--text-secondary);">-</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">✨ 유의어 (Syn)</span>
+              <div class="chips-list" id="currentWordSynonyms"></div>
+            </div>
+            <div class="meta-row">
+              <span class="meta-label">⚡ 반의어 (Ant)</span>
+              <div class="chips-list" id="currentWordAntonyms"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sentences Display Area -->
+      <section id="sentencesSection" class="sentences-section" style="display: none;">
+        <div class="sentences-header">
+          <div class="sentences-header-title">
+            <span>5개 전문 분야 텝스 실전 예문</span>
+            <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-tertiary);">
+              (문장을 클릭하면 한글 번역이 나타나며, 단어를 클릭하면 한국어 뜻 팝업이 열립니다)
+            </span>
+          </div>
+          <button class="btn-secondary" id="revealAllKrBtn" style="font-size: 0.8rem; padding: 0.35rem 0.7rem;">
+            전체 번역 토글
+          </button>
+        </div>
+
+        <div id="sentencesList" style="display: flex; flex-direction: column; gap: 1.1rem;"></div>
+      </section>
+    </main>
+
+    <!-- Floating Interactive Word Popover (Requirement 1: Prominent Korean Meaning) -->
+    <div id="wordPopover" class="word-popover" style="display: none;">
+      <div class="popover-header">
+        <div class="popover-title-row">
+          <span class="popover-word" id="popoverWordText">word</span>
+          <span class="popover-ipa" id="popoverIpaText">/wɜːd/</span>
+        </div>
+        <button class="action-icon-btn" id="popoverAudioBtn" title="발음 듣기">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        </button>
+      </div>
+
+      <!-- Prominent Korean Meaning in Popover (Requirement 1) -->
+      <div class="popover-kr-box" id="popoverKrBadge">한국어 뜻 로딩 중...</div>
+      <div class="popover-forms-row" id="popoverFormsRow"></div>
+
+      <button class="popover-add-btn" id="popoverAddBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>단어장에 추가</span>
+      </button>
+    </div>
+
+    <!-- Folded Notebook / Vocabulary Drawer at Bottom (Requirements 3, 7, 8) -->
+    <aside class="notebook-container" id="notebookContainer">
+      <div class="notebook-tab-handle" id="notebookTabHandle" title="클릭하여 단어장 열기/닫기">
+        <span class="notebook-tab-icon">📒</span>
+        <div class="notebook-tab-title">
+          <span>단어장 (Vocabulary)</span>
+          <span class="notebook-count-badge" id="notebookCountBadge">0</span>
+        </div>
+        <svg id="notebookChevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transition: transform 0.3s ease;">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </div>
+
+      <div class="notebook-sheet" id="notebookSheet">
+        <div class="notebook-header">
+          <div class="notebook-header-left">
+            <span class="notebook-header-title">검색 및 등록된 단어 목록</span>
+            <span style="font-size: 0.8rem; color: var(--text-tertiary);">'상세정보' 클릭 시 어근·파생형·유의어·반의어를 한눈에 확인합니다</span>
+          </div>
+
+          <!-- 3-State Legend -->
+          <div class="notebook-legend">
+            <div class="legend-item" title="아직 안 외움">
+              <span class="checkbox-3state unlearned" style="width: 16px; height: 16px;"></span>
+              <span>미암기</span>
+            </div>
+            <div class="legend-item" title="암기 중">
+              <span class="checkbox-3state learning" style="width: 16px; height: 16px;"></span>
+              <span>암기 중</span>
+            </div>
+            <div class="legend-item" title="체크 시 자동 삭제">
+              <span class="checkbox-3state mastered" style="width: 16px; height: 16px; font-size: 10px;">✓</span>
+              <span>완전 암기 (자동 삭제)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="notebook-list" id="notebookList"></div>
+      </div>
+    </aside>
+
+    <!-- Account Login/Register Modal (Requirement 4: Cross-Device Sync) -->
+    <div class="modal-backdrop" id="authModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">계정 동기화 (기기 간 영구 보존)</h3>
+          <button class="btn-icon" id="closeAuthModalBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tabLogin">로그인</button>
+          <button class="auth-tab" id="tabRegister">회원가입</button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="authUsernameInput">아이디 (영문/숫자)</label>
+          <input type="text" id="authUsernameInput" class="form-input" placeholder="원하는 아이디 입력" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="authPasswordInput">비밀번호</label>
+          <input type="password" id="authPasswordInput" class="form-input" placeholder="비밀번호 입력" />
+        </div>
+
+        <p class="form-hint" id="authNoticeText">
+          기존 아이디와 비밀번호로 로그인하여 단어장을 복원합니다.
+        </p>
+
+        <div class="form-group" style="margin-top: 0.5rem;">
+          <button class="search-submit-btn" id="authSubmitBtn" style="margin: 0; width: 100%; justify-content: center; padding: 0.75rem;">
+            로그인
+          </button>
+        </div>
+
+        <div style="font-size: 0.78rem; color: var(--text-tertiary); line-height: 1.4; border-top: 1px solid var(--border-light); padding-top: 0.75rem;">
+          💡 <b>안내</b>: PC나 모바일 기기를 이동하더라도 동일한 아이디와 비밀번호로 로그인하면 내 단어장과 암기 상태가 그대로 복원됩니다.
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-backdrop" id="settingsModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">설정 및 AI 엔진 옵션</h3>
+          <button class="btn-icon" id="closeSettingsBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="apiKeyInput">Google Gemini API Key (선택 사항)</label>
+          <input type="password" id="apiKeyInput" class="form-input" placeholder="AI Studio에서 발급받은 API 키 입력" />
+          <span class="form-hint">
+            💡 <b>API 키가 없어도 100% 정상 작동합니다.</b> 자체 내장된 정교한 텝스 기출 알고리즘과 방대한 사전 데이터베이스로 고품질 예문이 즉시 생성됩니다.
+          </span>
+        </div>
+
+        <div class="form-group" style="margin-top: 0.5rem; display: flex; gap: 0.5rem; justify-content: flex-end;">
+          <button class="btn-secondary" id="clearAllVocabBtn" style="color: var(--danger);">단어장 전체 비우기</button>
+          <button class="search-submit-btn" id="saveSettingsBtn" style="margin: 0; padding: 0.5rem 1.2rem;">저장</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+  </div>
+
+  <script>
+
+(function() {
+  'use strict';
+  
+  /* --- 1. TEPS Standard & Extended Vocab Data (Roots, Forms, Synonyms, Antonyms) --- */
+  // Comprehensive TEPS high-frequency dictionary with pronunciation, meanings, and word forms
+const tepsDictionary = {
+  // Frequently tested TEPS vocabulary across various score bands
+  "abate": { ipa: "/əˈbeɪt/", pos: "v.", kr: "줄어들다, 누그러지다, 완화하다", level: 387 },
+  "aberrant": { ipa: "/æˈber.ənt/", pos: "adj.", kr: "도리를 벗어난, 일탈적인, 비정상적인", level: 450 },
+  "abolish": { ipa: "/əˈbɒl.ɪʃ/", pos: "v.", kr: "폐지하다, 철폐하다", level: 327 },
+  "abrupt": { ipa: "/əˈbrʌpt/", pos: "adj.", kr: "갑작스러운, 퉁명스러운", level: 327 },
+  "abstain": { ipa: "/æbˈsteɪn/", pos: "v.", kr: "기권하다, 자제하다, 삼가다", level: 327 },
+  "accede": { ipa: "/əkˈsiːd/", pos: "v.", kr: "동의하다, 응하다, (왕위에) 오르다", level: 450 },
+  "acclaim": { ipa: "/əˈkleɪm/", pos: "v./n.", kr: "칭송하다, 환호하다; 찬사", level: 327 },
+  "accommodate": { ipa: "/əˈkɒm.ə.deɪt/", pos: "v.", kr: "수용하다, 부응하다, 편의를 도모하다", level: 327 },
+  "acquiesce": { ipa: "/ˌæk.wiˈes/", pos: "v.", kr: "묵인하다, 잠자코 따르다", level: 450 },
+  "adamant": { ipa: "/ˈæd.ə.mənt/", pos: "adj.", kr: "요지부동의, 단호한", level: 387 },
+  "adequate": { ipa: "/ˈæd.ə.kwət/", pos: "adj.", kr: "적절한, 충분한", level: 250 },
+  "adhere": { ipa: "/ədˈhɪər/", pos: "v.", kr: "고수하다, 부착되다, 충실하다", level: 327 },
+  "admonish": { ipa: "/ədˈmɒn.ɪʃ/", pos: "v.", kr: "꾸짖다, 훈계하다, 권고하다", level: 387 },
+  "adversity": { ipa: "/ədˈvɜː.sə.ti/", pos: "n.", kr: "역경, 불운, 곤경", level: 327 },
+  "advocate": { ipa: "/ˈæd.və.keɪt/", pos: "v./n.", kr: "옹호하다, 주장하다; 지지자", level: 327 },
+  "aesthetic": { ipa: "/esˈθet.ɪk/", pos: "adj./n.", kr: "미적인, 심미적인; 미학", level: 327 },
+  "affluent": { ipa: "/ˈæf.lu.ənt/", pos: "adj.", kr: "부유한, 풍요로운", level: 327 },
+  "aggregate": { ipa: "/ˈæɡ.rɪ.ɡət/", pos: "n./adj./v.", kr: "총합, 집합체; 종합적인; 모으다", level: 387 },
+  "alleviate": { ipa: "/əˈliː.vi.eɪt/", pos: "v.", kr: "완화하다, 경감시키다", level: 327 },
+  "ambiguous": { ipa: "/æmˈbɪɡ.ju.əs/", pos: "adj.", kr: "애매모호한, 다의적인", level: 327 },
+  "ambivalent": { ipa: "/æmˈbɪv.ə.lənt/", pos: "adj.", kr: "반대 감정이 양립하는, 모순된", level: 387 },
+  "ameliorate": { ipa: "/əˈmiː.li.ə.reɪt/", pos: "v.", kr: "개선하다, 완화시키다", level: 450 },
+  "amenable": { ipa: "/əˈmiː.nə.bəl/", pos: "adj.", kr: "순종하는, 잘 받아들이는, 처리 가능한", level: 387 },
+  "anomalous": { ipa: "/əˈnɒm.ə.ləs/", pos: "adj.", kr: "변칙적인, 이례적인", level: 450 },
+  "antiquated": { ipa: "/ˈæn.tɪ.kweɪ.tɪd/", pos: "adj.", kr: "구식의, 시대에 뒤떨어진", level: 327 },
+  "apathy": { ipa: "/ˈæp.ə.θi/", pos: "n.", kr: "무관심, 냉담", level: 327 },
+  "apprehensive": { ipa: "/ˌæp.rɪˈhen.sɪv/", pos: "adj.", kr: "걱정하는, 불안해하는, 이해가 빠른", level: 327 },
+  "arbitrary": { ipa: "/ˈɑː.bɪ.trər.i/", pos: "adj.", kr: "임의적인, 제멋대로인, 독단적인", level: 327 },
+  "articulate": { ipa: "/ɑːˈtɪk.jə.lət/", pos: "v./adj.", kr: "분명히 표현하다; 조리 있는", level: 327 },
+  "ascertain": { ipa: "/ˌæs.əˈteɪn/", pos: "v.", kr: "알아내다, 확인하다, 규명하다", level: 387 },
+  "assiduous": { ipa: "/əˈsɪdʒ.u.əs/", pos: "adj.", kr: "근면 성실한, 끈기 있는", level: 450 },
+  "audacious": { ipa: "/ɔːˈdeɪ.ʃəs/", pos: "adj.", kr: "대담한, 호기로운, 뻔뻔한", level: 387 },
+  "augment": { ipa: "/ɔːɡˈment/", pos: "v.", kr: "증가시키다, 늘리다, 증강하다", level: 387 },
+  "auspicious": { ipa: "/ɔːˈspɪʃ.əs/", pos: "adj.", kr: "상서로운, 길조의, 유망한", level: 450 },
+  "austere": { ipa: "/ɔːˈstɪər/", pos: "adj.", kr: "엄격한, 소박한, 내핍의, 긴축의", level: 387 },
+  "authenticate": { ipa: "/ɔːˈθen.tɪ.keɪt/", pos: "v.", kr: "진짜임을 증명하다, 입증하다", level: 327 },
+  "autonomous": { ipa: "/ɔːˈtɒn.ə.məs/", pos: "adj.", kr: "자주의, 자율적인", level: 327 },
+  "belligerent": { ipa: "/bəˈlɪdʒ.ər.ənt/", pos: "adj.", kr: "적대적인, 호전적인, 교전 중인", level: 387 },
+  "benevolent": { ipa: "/bəˈnev.əl.ənt/", pos: "adj.", kr: "자애로운, 자선적인, 친절한", level: 327 },
+  "bolster": { ipa: "/ˈbəʊl.stər/", pos: "v.", kr: "강화하다, 지지하다, 북돋우다", level: 327 },
+  "brevity": { ipa: "/ˈbrev.ə.ti/", pos: "n.", kr: "간결함, 짧음", level: 387 },
+  "candid": { ipa: "/ˈkæn.dɪd/", pos: "adj.", kr: "솔직한, 거리낌 없는", level: 327 },
+  "capitulate": { ipa: "/kəˈpɪtʃ.ə.leɪt/", pos: "v.", kr: "굴복하다, 항복하다", level: 450 },
+  "catalyst": { ipa: "/ˈkæt.əl.ɪst/", pos: "n.", kr: "촉매, 기폭제, 촉진자", level: 327 },
+  "circumscribe": { ipa: "/ˈsɜː.kəm.skraɪb/", pos: "v.", kr: "제한하다, 한정하다", level: 450 },
+  "clandestine": { ipa: "/klænˈdes.tɪn/", pos: "adj.", kr: "은밀한, 비밀의", level: 450 },
+  "coerce": { ipa: "/kəʊˈɜːs/", pos: "v.", kr: "강요하다, 강제하다", level: 387 },
+  "cognizant": { ipa: "/ˈkɒɡ.nɪ.zənt/", pos: "adj.", kr: "인식하고 있는, 알고 있는", level: 387 },
+  "collaborate": { ipa: "/kəˈlæb.ə.reɪt/", pos: "v.", kr: "협력하다, 공동 작업하다", level: 250 },
+  "commensurate": { ipa: "/kəˈmen.sjər.ət/", pos: "adj.", kr: "비례하는, 상응하는", level: 450 },
+  "compelling": { ipa: "/kəmˈpel.ɪŋ/", pos: "adj.", kr: "설득력 있는, 강력한, 눈을 뗄 수 없는", level: 327 },
+  "complacent": { ipa: "/kəmˈpleɪ.sənt/", pos: "adj.", kr: "자기만족적인, 현실에 안주하는", level: 387 },
+  "comprehensive": { ipa: "/ˌkɒm.prɪˈhen.sɪv/", pos: "adj.", kr: "포괄적인, 종합적인", level: 327 },
+  "concede": { ipa: "/kənˈsiːd/", pos: "v.", kr: "인정하다, 양보하다", level: 387 },
+  "conciliatory": { ipa: "/kənˈsɪl.i.ə.tər.i/", pos: "adj.", kr: "달래는, 회유적인", level: 450 },
+  "concur": { ipa: "/kənˈkɜːr/", pos: "v.", kr: "동의하다, 일치하다, 동시에 일어나다", level: 387 },
+  "condone": { ipa: "/kənˈdəʊn/", pos: "v.", kr: "용인하다, 묵과하다", level: 387 },
+  "conducive": { ipa: "/kənˈdʒuː.sɪv/", pos: "adj.", kr: "~에 좋은, 도움이 되는", level: 387 },
+  "conjecture": { ipa: "/kənˈdʒek.tʃər/", pos: "n./v.", kr: "추측, 짐작; 추측하다", level: 387 },
+  "conspicuous": { ipa: "/kənˈspɪk.ju.əs/", pos: "adj.", kr: "눈에 띄는, 뚜렷한", level: 327 },
+  "contemplate": { ipa: "/ˈkɒn.təm.pleɪt/", pos: "v.", kr: "심사숙고하다, 고려하다", level: 327 },
+  "contentious": { ipa: "/kənˈten.ʃəs/", pos: "adj.", kr: "논쟁적인, 논란이 많은", level: 387 },
+  "contingent": { ipa: "/kənˈtɪn.dʒənt/", pos: "adj./n.", kr: "~에 달린, 조건으로 하는; 파견단", level: 387 },
+  "corroborate": { ipa: "/kəˈrɒb.ə.reɪt/", pos: "v.", kr: "입증하다, 확증하다", level: 450 },
+  "culminate": { ipa: "/ˈkʌl.mɪ.neɪt/", pos: "v.", kr: "절정에 달하다, 결국 ~로 끝나다", level: 387 },
+  "cynical": { ipa: "/ˈsɪn.ɪ.kəl/", pos: "adj.", kr: "냉소적인, 비관적인", level: 327 },
+  "daunting": { ipa: "/ˈdɔːn.tɪŋ/", pos: "adj.", kr: "위협적인, 벅찬, 기가 꺾이는", level: 327 },
+  "debilitate": { ipa: "/dɪˈbɪl.ɪ.teɪt/", pos: "v.", kr: "쇠약하게 만들다, 무력화하다", level: 387 },
+  "defer": { ipa: "/dɪˈfɜːr/", pos: "v.", kr: "연기하다, 미루다; 경의를 표하다", level: 327 },
+  "defiant": { ipa: "/dɪˈfaɪ.ənt/", pos: "adj.", kr: "반항적인, 저항하는", level: 327 },
+  "delineate": { ipa: "/dɪˈlɪn.i.eɪt/", pos: "v.", kr: "기술하다, 명확히 그리다", level: 450 },
+  "detrimental": { ipa: "/ˌdet.rɪˈmen.təl/", pos: "adj.", kr: "해로운, 유해한", level: 327 },
+  "diffident": { ipa: "/ˈdɪf.ɪ.dənt/", pos: "adj.", kr: "자신 없는, 소심한", level: 450 },
+  "diligent": { ipa: "/ˈdɪl.ɪ.dʒənt/", pos: "adj.", kr: "성실한, 근면한", level: 250 },
+  "diminish": { ipa: "/dɪˈmɪn.ɪʃ/", pos: "v.", kr: "줄이다, 축소하다, 폄하하다", level: 250 },
+  "discern": { ipa: "/dɪˈsɜːn/", pos: "v.", kr: "식별하다, 분별하다, 알아차리다", level: 387 },
+  "discrepancy": { ipa: "/dɪˈskrep.ən.si/", pos: "n.", kr: "불일치, 차이", level: 327 },
+  "disdain": { ipa: "/dɪsˈdeɪn/", pos: "n./v.", kr: "경멸, 멸시; 경멸하다", level: 387 },
+  "disparate": { ipa: "/ˈdɪs.pər.ət/", pos: "adj.", kr: "본질적으로 다른, 이질적인", level: 450 },
+  "disseminate": { ipa: "/dɪˈsem.ɪ.neɪt/", pos: "v.", kr: "유포하다, 퍼뜨리다, 전파하다", level: 387 },
+  "divergent": { ipa: "/daɪˈvɜː.dʒənt/", pos: "adj.", kr: "갈라지는, 일치하지 않는, 분기하는", level: 327 },
+  "dormant": { ipa: "/ˈdɔː.mənt/", pos: "adj.", kr: "휴면기의, 잠재적인, 활동을 중단한", level: 327 },
+  "dubious": { ipa: "/ˈdʒuː.bi.əs/", pos: "adj.", kr: "의심스러운, 수상쩍은, 미심쩍은", level: 327 },
+  "ebullient": { ipa: "/ɪˈbʊl.i.ənt/", pos: "adj.", kr: "패기만만한, 사기충천한", level: 500 },
+  "eccentric": { ipa: "/ekˈsen.trɪk/", pos: "adj.", kr: "별난, 괴짜의, 기이한", level: 327 },
+  "eclectic": { ipa: "/ekˈlek.tɪk/", pos: "adj.", kr: "다방면에 걸친, 절충적인", level: 450 },
+  "efficacious": { ipa: "/ˌef.ɪˈkeɪ.ʃəs/", pos: "adj.", kr: "효과적인, 효능이 있는", level: 450 },
+  "elicit": { ipa: "/iˈlɪs.ɪt/", pos: "v.", kr: "끌어내다, 유도해내다", level: 387 },
+  "eloquent": { ipa: "/ˈel.ə.kwənt/", pos: "adj.", kr: "웅변을 잘하는, 유창한, 설득력 있는", level: 327 },
+  "elusive": { ipa: "/iˈluː.sɪv/", pos: "adj.", kr: "규정하기 힘든, 찾기 힘든, 모호한", level: 387 },
+  "emanate": { ipa: "/ˈem.ə.neɪt/", pos: "v.", kr: "발산하다, 뿜어져 나오다", level: 387 },
+  "embellish": { ipa: "/ɪmˈbel.ɪʃ/", pos: "v.", kr: "미화하다, 장식하다, 꾸미다", level: 387 },
+  "empirical": { ipa: "/ɪmˈpɪr.ɪ.kəl/", pos: "adj.", kr: "실증적인, 경험에 의거한", level: 327 },
+  "emulate": { ipa: "/ˈem.jə.leɪt/", pos: "v.", kr: "모방하다, 본받다, 경쟁하다", level: 387 },
+  "enervate": { ipa: "/ˈen.ə.veɪt/", pos: "v.", kr: "기력을 떨어뜨리다, 무기력하게 하다", level: 450 },
+  "engender": { ipa: "/ɪnˈdʒen.dər/", pos: "v.", kr: "낳다, 발생시키다, 불러일으키다", level: 450 },
+  "enhance": { ipa: "/ɪnˈhɑːns/", pos: "v.", kr: "향상시키다, 높이다", level: 250 },
+  "enigma": { ipa: "/ɪˈnɪɡ.mə/", pos: "n.", kr: "수수께끼, 난제", level: 387 },
+  "ephemeral": { ipa: "/ɪˈfem.ər.əl/", pos: "adj.", kr: "수명이 짧은, 덧없는, 순식간의", level: 450 },
+  "equivocal": { ipa: "/ɪˈkwɪv.ə.kəl/", pos: "adj.", kr: "애매한, 모호한, 불분명한", level: 450 },
+  "eradicate": { ipa: "/ɪˈræd.ɪ.keɪt/", pos: "v.", kr: "근절하다, 뿌리뽑다", level: 387 },
+  "esoteric": { ipa: "/ˌes.əˈter.ɪk/", pos: "adj.", kr: "심오한, 소수만 이해하는, 비밀의", level: 450 },
+  "exacerbate": { ipa: "/ɪɡˈzæs.ə.beɪt/", pos: "v.", kr: "악화시키다, 가중시키다", level: 387 },
+  "exemplify": { ipa: "/ɪɡˈzem.plɪ.faɪ/", pos: "v.", kr: "전형적인 예가 되다, 예시하다", level: 327 },
+  "exhaustive": { ipa: "/ɪɡˈzɔː.stɪv/", pos: "adj.", kr: "철저한, 완전한, 소모적인", level: 327 },
+  "exonerate": { ipa: "/ɪɡˈzɒn.ə.reɪt/", pos: "v.", kr: "무죄임을 밝히다, 혐의를 벗겨주다", level: 450 },
+  "expedient": { ipa: "/ɪkˈspiː.di.ənt/", pos: "adj./n.", kr: "편의주의적인, 방편의; 방책", level: 450 },
+  "explicit": { ipa: "/ɪkˈsplɪs.ɪt/", pos: "adj.", kr: "명백한, 노골적인", level: 327 },
+  "facetious": { ipa: "/fəˈsiː.ʃəs/", pos: "adj.", kr: "경박한, 농담조의", level: 450 },
+  "fallacious": { ipa: "/fəˈleɪ.ʃəs/", pos: "adj.", kr: "잘못된, 틀린, 오류가 있는", level: 387 },
+  "fastidious": { ipa: "/fæsˈtɪd.i.əs/", pos: "adj.", kr: "까다로운, 세심한, 깔끔떠는", level: 450 },
+  "feasible": { ipa: "/ˈfiː.zə.bəl/", pos: "adj.", kr: "실현 가능한, 그럴싸한", level: 327 },
+  "fervent": { ipa: "/ˈfɜː.vənt/", pos: "adj.", kr: "열렬한, 뜨거운", level: 387 },
+  "fluctuate": { ipa: "/ˈflʌk.tʃu.eɪt/", pos: "v.", kr: "변동하다, 요동치다", level: 327 },
+  "fortuitous": { ipa: "/fɔːˈtʃuː.ɪ.təs/", pos: "adj.", kr: "우연한, 행운의", level: 450 },
+  "foster": { ipa: "/ˈfɒs.tər/", pos: "v.", kr: "조성하다, 육성하다, 발전시키다", level: 327 },
+  "frugal": { ipa: "/ˈfruː.ɡəl/", pos: "adj.", kr: "절약하는, 검소한", level: 327 },
+  "futile": { ipa: "/ˈfjuː.taɪl/", pos: "adj.", kr: "헛된, 소용없는", level: 327 },
+  "garrulous": { ipa: "/ˈɡær.əl.əs/", pos: "adj.", kr: "수다스러운, 말이 많은", level: 450 },
+  "gregarious": { ipa: "/ɡrɪˈɡeə.ri.əs/", pos: "adj.", kr: "사교적인, 군집성의", level: 387 },
+  "haphazard": { ipa: "/ˌhæpˈhæz.əd/", pos: "adj.", kr: "무계획적인, 마구잡이의", level: 387 },
+  "heinous": { ipa: "/ˈheɪ.nəs/", pos: "adj.", kr: "악랄한, 극악무도한", level: 450 },
+  "hierarchy": { ipa: "/ˈhaɪə.rɑː.ki/", pos: "n.", kr: "계급 제도, 위계 질서", level: 327 },
+  "homogeneous": { ipa: "/ˌhɒm.əˈdʒiː.ni.əs/", pos: "adj.", kr: "동질적인, 균일한", level: 327 },
+  "hyperbole": { ipa: "/haɪˈpɜː.bəl.i/", pos: "n.", kr: "과장법, 과장된 표현", level: 450 },
+  "hypocrisy": { ipa: "/hɪˈpɒk.rɪ.si/", pos: "n.", kr: "위선, 겉치레", level: 327 },
+  "idiosyncrasy": { ipa: "/ˌɪd.i.əˈsɪŋ.krə.si/", pos: "n.", kr: "특이성, 특유의 성질", level: 450 },
+  "imminent": { ipa: "/ˈɪm.ɪ.nənt/", pos: "adj.", kr: "임박한, 눈앞에 닥친", level: 327 },
+  "immutable": { ipa: "/ɪˈmjuː.tə.bəl/", pos: "adj.", kr: "불변의, 바꿀 수 없는", level: 450 },
+  "impeccable": { ipa: "/ɪmˈpek.ə.bəl/", pos: "adj.", kr: "결점 없는, 완벽한", level: 387 },
+  "impede": { ipa: "/ɪmˈpiːd/", pos: "v.", kr: "방해하다, 저해하다", level: 327 },
+  "imperative": { ipa: "/ɪmˈper.ə.tɪv/", pos: "adj./n.", kr: "반드시 해야 하는, 긴요한; 의무", level: 327 },
+  "implacable": { ipa: "/ɪmˈplæk.ə.bəl/", pos: "adj.", kr: "달랠 수 없는, 완강한, 무자비한", level: 450 },
+  "implicit": { ipa: "/ɪmˈplɪs.ɪt/", pos: "adj.", kr: "암시된, 내포된, 암묵적인", level: 327 },
+  "impoverished": { ipa: "/ɪmˈpɒv.ər.ɪʃt/", pos: "adj.", kr: "빈곤한, 궁핍한, 메마른", level: 327 },
+  "inadvertent": { ipa: "/ˌɪn.ədˈvɜː.tənt/", pos: "adj.", kr: "의도치 않은, 우연의, 부주의한", level: 387 },
+  "incessant": { ipa: "/ɪnˈses.ənt/", pos: "adj.", kr: "끊임없는, 쉴 새 없는", level: 387 },
+  "incongruous": { ipa: "/ɪnˈkɒŋ.ɡru.əs/", pos: "adj.", kr: "어울리지 않는, 조화되지 않는", level: 450 },
+  "indifferent": { ipa: "/ɪnˈdɪf.ər.ənt/", pos: "adj.", kr: "무관심한, 냉담한", level: 250 },
+  "indigenous": { ipa: "/ɪnˈdɪdʒ.ɪ.nəs/", pos: "adj.", kr: "토착의, 고유한, 원산의", level: 327 },
+  "indolent": { ipa: "/ˈɪn.dəl.ənt/", pos: "adj.", kr: "게으른, 나태한", level: 450 },
+  "ineffable": { ipa: "/ɪnˈef.ə.bəl/", pos: "adj.", kr: "말로 표현할 수 없는", level: 500 },
+  "inevitable": { ipa: "/ɪnˈev.ɪ.tə.bəl/", pos: "adj.", kr: "불가피한, 필연적인", level: 250 },
+  "infer": { ipa: "/ɪnˈfɜːr/", pos: "v.", kr: "추론하다, 뜻을 넌지시 비치다", level: 250 },
+  "ingenious": { ipa: "/ɪnˈdʒiː.ni.əs/", pos: "adj.", kr: "독창적인, 기발한", level: 327 },
+  "inherent": { ipa: "/ɪnˈhɪə.rənt/", pos: "adj.", kr: "내재하는, 고유한", level: 327 },
+  "inhibited": { ipa: "/ɪnˈhɪb.ɪ.tɪd/", pos: "adj.", kr: "어색해하는, 억제된", level: 327 },
+  "innate": { ipa: "/ɪˈneɪt/", pos: "adj.", kr: "타고난, 선천적인", level: 327 },
+  "innocuous": { ipa: "/ɪˈnɒk.ju.əs/", pos: "adj.", kr: "무해한, 악의 없는", level: 387 },
+  "insidious": { ipa: "/ɪnˈsɪd.i.əs/", pos: "adj.", kr: "서서히 퍼지는, 교활한, 음흉한", level: 450 },
+  "instigate": { ipa: "/ˈɪn.stɪ.ɡeɪt/", pos: "v.", kr: "선동하다, 유발하다, 부추기다", level: 387 },
+  "insular": { ipa: "/ˈɪn.sjə.lər/", pos: "adj.", kr: "배타적인, 편협한, 섬의", level: 450 },
+  "integrity": { ipa: "/ɪnˈteɡ.rə.ti/", pos: "n.", kr: "진실성, 도덕성, 온전함", level: 327 },
+  "intricate": { ipa: "/ˈɪn.trɪ.kət/", pos: "adj.", kr: "복잡한, 정교한", level: 327 },
+  "intrinsic": { ipa: "/ɪnˈtrɪn.zɪk/", pos: "adj.", kr: "고유한, 본질적인", level: 387 },
+  "inundate": { ipa: "/ˈɪn.ʌn.deɪt/", pos: "v.", kr: "밀어닥치다, 침수시키다, 쇄도하다", level: 387 },
+  "invoke": { ipa: "/ɪnˈvəʊk/", pos: "v.", kr: "적용하다, 들먹이다, 간청하다", level: 327 },
+  "judicious": { ipa: "/dʒuːˈdɪʃ.əs/", pos: "adj.", kr: "신중한, 판단력 있는", level: 387 },
+  "juxtapose": { ipa: "/ˌdʒʌk.stəˈpəʊz/", pos: "v.", kr: "병치하다, 나란히 놓다", level: 450 },
+  "laconic": { ipa: "/ləˈkɒn.ɪk/", pos: "adj.", kr: "말수가 적은, 간결한", level: 450 },
+  "laudable": { ipa: "/ˈlɔː.də.bəl/", pos: "adj.", kr: "칭찬할 만한, 기특한", level: 387 },
+  "lethargic": { ipa: "/ləˈθɑː.dʒɪk/", pos: "adj.", kr: "무기력한, 둔감한", level: 387 },
+  "lucid": { ipa: "/ˈluː.sɪd/", pos: "adj.", kr: "명쾌한, 명료한, 맑은", level: 327 },
+  "lucrative": { ipa: "/ˈluː.krə.tɪv/", pos: "adj.", kr: "수익성이 좋은, 돈벌이가 되는", level: 327 },
+  "magnanimous": { ipa: "/mæɡˈnæn.ɪ.məs/", pos: "adj.", kr: "도량이 넓은, 관대한", level: 450 },
+  "malleable": { ipa: "/ˈmæl.i.ə.bəl/", pos: "adj.", kr: "영향을 잘 받는, 유연한, 가단성의", level: 450 },
+  "meticulous": { ipa: "/məˈtɪk.jə.ləs/", pos: "adj.", kr: "꼼꼼한, 세심한", level: 327 },
+  "mitigate": { ipa: "/ˈmɪt.ɪ.ɡeɪt/", pos: "v.", kr: "완화하다, 경감시키다", level: 327 },
+  "morose": { ipa: "/məˈrəʊs/", pos: "adj.", kr: "시무룩한, 뚱한, 침울한", level: 450 },
+  "mundane": { ipa: "/mʌnˈdeɪn/", pos: "adj.", kr: "일상적인, 평범한, 세속적인", level: 327 },
+  "negligible": { ipa: "/ˈneɡ.lɪ.dʒə.bəl/", pos: "adj.", kr: "무시해도 될 정도의, 하찮은", level: 327 },
+  "nostalgia": { ipa: "/nɒsˈtæl.dʒə/", pos: "n.", kr: "향수, 과거에 대한 그리움", level: 250 },
+  "notorious": { ipa: "/nəʊˈtɔː.ri.əs/", pos: "adj.", kr: "악명 높은", level: 250 },
+  "novice": { ipa: "/ˈnɒv.ɪs/", pos: "n.", kr: "초보자, 풋내기", level: 250 },
+  "nuance": { ipa: "/ˈnjuː.ɑːns/", pos: "n.", kr: "미묘한 차이, 뉘앙스", level: 327 },
+  "obdurate": { ipa: "/ˈɒb.djə.rət/", pos: "adj.", kr: "고집 센, 완고한", level: 450 },
+  "obfuscate": { ipa: "/ˈɒb.fʌs.keɪt/", pos: "v.", kr: "흐리게 하다, 혼란스럽게 하다", level: 450 },
+  "oblivious": { ipa: "/əˈblɪv.i.əs/", pos: "adj.", kr: "의식하지 못하는, 염두에 두지 않는", level: 327 },
+  "obscure": { ipa: "/əbˈskjʊər/", pos: "adj./v.", kr: "무명의, 모호한; 가리다, 흐리게 하다", level: 327 },
+  "obstinate": { ipa: "/ˈɒb.stɪ.nət/", pos: "adj.", kr: "완강한, 고집 센, 난치의", level: 387 },
+  "ominous": { ipa: "/ˈɒm.ɪ.nəs/", pos: "adj.", kr: "불길한, 험악한", level: 327 },
+  "opaque": { ipa: "/əʊˈpeɪk/", pos: "adj.", kr: "불투명한, 난해한", level: 387 },
+  "opportunist": { ipa: "/ˌɒp.əˈtjuː.nɪst/", pos: "n.", kr: "기회주의자", level: 327 },
+  "opulent": { ipa: "/ˈɒp.jə.lənt/", pos: "adj.", kr: "호화로운, 부유한, 엄청나게 많은", level: 450 },
+  "ostentatious": { ipa: "/ˌɒs.tenˈteɪ.ʃəs/", pos: "adj.", kr: "과시하는, 허세 부리는", level: 450 },
+  "paradox": { ipa: "/ˈpær.ə.dɒks/", pos: "n.", kr: "역설, 모순된 상황", level: 250 },
+  "paragon": { ipa: "/ˈpær.ə.ɡən/", pos: "n.", kr: "귀감, 모범", level: 450 },
+  "partisan": { ipa: "/ˌpɑː.tɪˈzæn/", pos: "adj./n.", kr: "편파적인, 당파적인; 열렬한 지지자", level: 387 },
+  "paucity": { ipa: "/ˈpɔː.sə.ti/", pos: "n.", kr: "부족, 결핍, 소량", level: 450 },
+  "pedantic": { ipa: "/pɪˈdæn.tɪk/", pos: "adj.", kr: "규칙에 얽매이는, 아는 체하는", level: 450 },
+  "perceptive": { ipa: "/pəˈsep.tɪv/", pos: "adj.", kr: "통찰력 있는, 지각력 있는", level: 327 },
+  "perennial": { ipa: "/pəˈren.i.əl/", pos: "adj.", kr: "지속되는, 영원한, 다년생의", level: 387 },
+  "pernicious": { ipa: "/pəˈnɪʃ.əs/", pos: "adj.", kr: "치명적인, 유해한", level: 450 },
+  "perpetual": { ipa: "/pəˈpetʃ.u.əl/", pos: "adj.", kr: "끊임없는, 영속적인", level: 327 },
+  "pervasive": { ipa: "/pəˈveɪ.sɪv/", pos: "adj.", kr: "만연한, 스며드는", level: 387 },
+  "plausible": { ipa: "/ˈplɔː.zə.bəl/", pos: "adj.", kr: "타당한 것 같은, 그럴듯한", level: 327 },
+  "pragmatic": { ipa: "/præɡˈmæt.ɪk/", pos: "adj.", kr: "실용적인, 실제적인", level: 327 },
+  "precarious": { ipa: "/prɪˈkeə.ri.əs/", pos: "adj.", kr: "위태로운, 불안정한", level: 387 },
+  "precedent": { ipa: "/ˈpres.ɪ.dənt/", pos: "n.", kr: "선례, 판례", level: 327 },
+  "precocious": { ipa: "/prɪˈkəʊ.ʃəs/", pos: "adj.", kr: "조숙한, 어른스러운", level: 450 },
+  "prodigious": { ipa: "/prəˈdɪdʒ.əs/", pos: "adj.", kr: "엄청난, 거대한, 경이로운", level: 450 },
+  "profound": { ipa: "/prəˈfaʊnd/", pos: "adj.", kr: "심오한, 깊은, 엄청난", level: 327 },
+  "proliferation": { ipa: "/prəˌlɪf.əˈreɪ.ʃən/", pos: "n.", kr: "급증, 확산", level: 387 },
+  "prolific": { ipa: "/prəˈlɪf.ɪk/", pos: "adj.", kr: "다작하는, 다산의, 풍부한", level: 327 },
+  "prominent": { ipa: "/ˈprɒm.ɪ.nənt/", pos: "adj.", kr: "저명한, 두드러진, 눈에 띄는", level: 250 },
+  "propensity": { ipa: "/prəˈpen.sə.ti/", pos: "n.", kr: "경향, 성향", level: 387 },
+  "prudent": { ipa: "/ˈpruː.dənt/", pos: "adj.", kr: "신중한, 빈틈없는", level: 327 },
+  "quandary": { ipa: "/ˈkwɒn.dri/", pos: "n.", kr: "진퇴양난, 곤경", level: 450 },
+  "rancor": { ipa: "/ˈræŋ.kər/", pos: "n.", kr: "원한, 유감, 악의", level: 450 },
+  "recalcitrant": { ipa: "/rɪˈkæl.sɪ.trənt/", pos: "adj.", kr: "저항하는, 다루기 힘든", level: 450 },
+  "redundant": { ipa: "/rɪˈdʌn.dənt/", pos: "adj.", kr: "불필요한, 군더더기의, 과잉의", level: 327 },
+  "refute": { ipa: "/rɪˈfjuːt/", pos: "v.", kr: "반박하다, 부인하다", level: 327 },
+  "relinquish": { ipa: "/rɪˈlɪŋ.kwɪʃ/", pos: "v.", kr: "포기하다, 양도하다", level: 387 },
+  "remorse": { ipa: "/rɪˈmɔːs/", pos: "n.", kr: "회한, 깊은 후회", level: 327 },
+  "renege": { ipa: "/rɪˈneɪɡ/", pos: "v.", kr: "어기다, 취소하다, 저버리다", level: 450 },
+  "repudiate": { ipa: "/rɪˈpjuː.di.eɪt/", pos: "v.", kr: "거부하다, 부인하다, 인연을 끊다", level: 450 },
+  "resilient": { ipa: "/rɪˈzɪl.i.ənt/", pos: "adj.", kr: "회복력 있는, 탄력 있는", level: 327 },
+  "reticent": { ipa: "/ˈret.ɪ.sənt/", pos: "adj.", kr: "과묵한, 말을 아끼는", level: 387 },
+  "revere": { ipa: "/rɪˈvɪər/", pos: "v.", kr: "숭배하다, 존경하다", level: 327 },
+  "rigorous": { ipa: "/ˈrɪɡ.ər.əs/", pos: "adj.", kr: "엄격한, 철저한, 혹독한", level: 327 },
+  "robust": { ipa: "/rəʊˈbʌst/", pos: "adj.", kr: "튼튼한, 탄탄한, 활발한", level: 327 },
+  "rudimentary": { ipa: "/ˌruː.dɪˈmen.tər.i/", pos: "adj.", kr: "가장 기본적인, 초보적인", level: 327 },
+  "sagacious": { ipa: "/səˈɡeɪ.ʃəs/", pos: "adj.", kr: "현명한, 기민한", level: 450 },
+  "scrutinize": { ipa: "/ˈskruː.tɪ.naɪz/", pos: "v.", kr: "면밀히 조사하다, 세심히 살피다", level: 327 },
+  "sedentary": { ipa: "/ˈsed.ən.tər.i/", pos: "adj.", kr: "주로 앉아서 하는, 정착성의", level: 327 },
+  "serendipity": { ipa: "/ˌser.ənˈdɪp.ə.ti/", pos: "n.", kr: "뜻밖의 행운, 우연한 발견", level: 387 },
+  "spurious": { ipa: "/ˈspjʊə.ri.əs/", pos: "adj.", kr: "거짓된, 가짜의, 비논리적인", level: 450 },
+  "stagnant": { ipa: "/ˈstæɡ.nənt/", pos: "adj.", kr: "침체된, 고여 있는", level: 327 },
+  "subsequent": { ipa: "/ˈsʌb.sɪ.kwənt/", pos: "adj.", kr: "그 다음의, 차후의", level: 250 },
+  "substantiate": { ipa: "/səbˈstæn.ʃi.eɪt/", pos: "v.", kr: "입증하다, 실증하다", level: 387 },
+  "subtle": { ipa: "/ˈsʌt.əl/", pos: "adj.", kr: "미묘한, 감지하기 힘든", level: 327 },
+  "succinct": { ipa: "/səkˈsɪŋkt/", pos: "adj.", kr: "간결한, 간단명료한", level: 387 },
+  "superfluous": { ipa: "/suːˈpɜː.flu.əs/", pos: "adj.", kr: "필요치 않은, 과도한, 잉여의", level: 450 },
+  "surreptitious": { ipa: "/ˌsʌr.əpˈtɪʃ.əs/", pos: "adj.", kr: "은밀한, 슬그머니 하는", level: 450 },
+  "susceptible": { ipa: "/səˈsep.tə.bəl/", pos: "adj.", kr: "취약한, 영향받기 쉬운, 민감한", level: 327 },
+  "taciturn": { ipa: "/ˈtæs.ɪ.tɜːn/", pos: "adj.", kr: "과묵한, 말수가 적은", level: 450 },
+  "tedious": { ipa: "/ˈtiː.di.əs/", pos: "adj.", kr: "지루한, 싫증 나는", level: 250 },
+  "tenacious": { ipa: "/təˈneɪ.ʃəs/", pos: "adj.", kr: "집요한, 끈질긴, 완강한", level: 387 },
+  "tentative": { ipa: "/ˈten.tə.tɪv/", pos: "adj.", kr: "잠정적인, 시험적인, 망설이는", level: 327 },
+  "ubiquitous": { ipa: "/juːˈbɪk.wɪ.təs/", pos: "adj.", kr: "어디에나 존재하는, 흔한", level: 387 },
+  "unprecedented": { ipa: "/ʌnˈpres.ɪ.den.tɪd/", pos: "adj.", kr: "전례 없는, 유례없는", level: 327 },
+  "vacillate": { ipa: "/ˈvæs.ɪ.leɪt/", pos: "v.", kr: "흔들리다, 갈팡질팡하다", level: 450 },
+  "venerable": { ipa: "/ˈven.ər.ə.bəl/", pos: "adj.", kr: "존경할 만한, 유서 깊은", level: 387 },
+  "veracity": { ipa: "/vəˈræs.ə.ti/", pos: "n.", kr: "진실성, 정확성", level: 450 },
+  "viable": { ipa: "/ˈvaɪ.ə.bəl/", pos: "adj.", kr: "실행 가능한, 생존 가능한", level: 327 },
+  "vigilant": { ipa: "/ˈvɪdʒ.əl.ənt/", pos: "adj.", kr: "경계하는, 방심하지 않는", level: 387 },
+  "vindicate": { ipa: "/ˈvɪn.dɪ.keɪt/", pos: "v.", kr: "정당성을 입증하다, 무죄를 입증하다", level: 450 },
+  "volatile": { ipa: "/ˈvɒl.ə.taɪl/", pos: "adj.", kr: "변덕스러운, 휘발성의, 불안정한", level: 327 },
+  "wary": { ipa: "/ˈweə.ri/", pos: "adj.", kr: "조심하는, 경계하는", level: 327 },
+  "zealous": { ipa: "/ˈzel.əs/", pos: "adj.", kr: "열성적인, 열광적인", level: 387 }
+};
+
+  // Extended TEPS Vocabulary with Korean meanings, Roots/Forms, Synonyms, and Antonyms
+const extendedTepsVocab = {
+  "abate": {
+    ipa: "/əˈbeɪt/",
+    pos: "v.",
+    kr: "줄어들다, 누그러지다, 완화하다",
+    root: "라틴어 battuere (치다, 때리다) → 두들겨서 줄이다",
+    forms: { noun: "abatement", adj: "unabated", verb: "abates, abating, abated" },
+    synonyms: ["diminish", "dwindle", "lessen", "subside", "wane"],
+    antonyms: ["intensify", "augment", "increase", "escalate"]
+  },
+  "aberrant": {
+    ipa: "/æˈber.ənt/",
+    pos: "adj.",
+    kr: "도리를 벗어난, 일탈적인, 비정상적인",
+    root: "ab- (벗어나) + errare (헤매다, 방황하다)",
+    forms: { noun: "aberration", adv: "aberrantly" },
+    synonyms: ["abnormal", "anomalous", "deviant", "atypical"],
+    antonyms: ["normal", "typical", "conventional", "standard"]
+  },
+  "abolish": {
+    ipa: "/əˈbɒl.ɪʃ/",
+    pos: "v.",
+    kr: "폐지하다, 철폐하다",
+    root: "ab- (완전히) + olere (자라다) → 성장을 멈추어 없애다",
+    forms: { noun: "abolition, abolitionist", adj: "abolitionary", verb: "abolishes, abolishing, abolished" },
+    synonyms: ["repeal", "rescind", "annul", "nullify", "eradicate"],
+    antonyms: ["establish", "enact", "institute", "reinstate"]
+  },
+  "abstain": {
+    ipa: "/æbˈsteɪn/",
+    pos: "v.",
+    kr: "자제하다, 삼가다, 기권하다",
+    root: "ab- (떨어져) + tenere (잡다, 쥐다) → 손을 떼다",
+    forms: { noun: "abstinence, abstention", adj: "abstinent", verb: "abstains, abstaining, abstained" },
+    synonyms: ["refrain", "desist", "forbear", "withhold"],
+    antonyms: ["indulge", "partake", "participate", "consume"]
+  },
+  "acclaim": {
+    ipa: "/əˈkleɪm/",
+    pos: "v./n.",
+    kr: "칭송하다, 찬사를 보내다; 찬사",
+    root: "ad- (~를 향해) + clamare (외치다) → 환호성을 지르다",
+    forms: { noun: "acclaim, acclamation", adj: "acclaimed", verb: "acclaims, acclaiming, acclaimed" },
+    synonyms: ["applaud", "praise", "commend", "laud", "extol"],
+    antonyms: ["criticize", "condemn", "denounce", "berate"]
+  },
+  "accommodate": {
+    ipa: "/əˈkɒm.ə.deɪt/",
+    pos: "v.",
+    kr: "수용하다, 부응하다, 편의를 도모하다",
+    root: "ad- (~에) + commodus (알맞은, 편리한) → 알맞게 맞추다",
+    forms: { noun: "accommodation", adj: "accommodating", verb: "accommodates, accommodating, accommodated" },
+    synonyms: ["lodge", "house", "adapt", "adjust", "oblige"],
+    antonyms: ["reject", "refuse", "disoblige", "hinder"]
+  },
+  "adamant": {
+    ipa: "/ˈæd.ə.mənt/",
+    pos: "adj.",
+    kr: "요지부동의, 단호한, 완강한",
+    root: "a- (부정: 안 됨) + daman (정복하다) → 꺾을 수 없는 단단함",
+    forms: { noun: "adamance", adv: "adamantly" },
+    synonyms: ["unyielding", "inflexible", "resolute", "steadfast", "stubborn"],
+    antonyms: ["yielding", "flexible", "compliant", "pliable"]
+  },
+  "alleviate": {
+    ipa: "/əˈliː.vi.eɪt/",
+    pos: "v.",
+    kr: "완화하다, 경감시키다, 고통을 덜어주다",
+    root: "ad- (~에) + levis (가벼운) → 무거운 짐을 가볍게 덜어주다",
+    forms: { noun: "alleviation", adj: "alleviative, alleviatory", verb: "alleviates, alleviating, alleviated" },
+    synonyms: ["mitigate", "relieve", "ease", "palliate", "soothe", "assuage"],
+    antonyms: ["exacerbate", "aggravate", "worsen", "intensify"]
+  },
+  "ambiguous": {
+    ipa: "/æmˈbɪɡ.ju.əs/",
+    pos: "adj.",
+    kr: "애매모호한, 두 가지 이상으로 해석되는",
+    root: "ambi- (둘, 양쪽) + agere (몰다, 움직이다) → 양쪽으로 몰고 가 갈피를 못 잡음",
+    forms: { noun: "ambiguity", adv: "ambiguously" },
+    synonyms: ["equivocal", "vague", "obscure", "unclear", "enigmatic"],
+    antonyms: ["explicit", "clear", "unambiguous", "lucid", "unequivocal"]
+  },
+  "ameliorate": {
+    ipa: "/əˈmiː.li.ə.reɪt/",
+    pos: "v.",
+    kr: "개선하다, 더 좋게 만들다",
+    root: "ad- (~으로) + melior (더 나은, better) → 더 낫게 만들다",
+    forms: { noun: "amelioration", adj: "ameliorative", verb: "ameliorates, ameliorating, ameliorated" },
+    synonyms: ["improve", "enhance", "better", "upgrade", "reform"],
+    antonyms: ["deteriorate", "worsen", "impair", "spoil"]
+  },
+  "arbitrary": {
+    ipa: "/ˈɑː.bɪ.trər.i/",
+    pos: "adj.",
+    kr: "임의적인, 제멋대로인, 독단적인",
+    root: "arbiter (판단자, 중재자) → 개인의 판단에만 치우친",
+    forms: { noun: "arbitrariness", adv: "arbitrarily" },
+    synonyms: ["capricious", "random", "whimsical", "autocratic", "subjective"],
+    antonyms: ["reasoned", "rational", "objective", "systematic"]
+  },
+  "bolster": {
+    ipa: "/ˈbəʊl.stər/",
+    pos: "v.",
+    kr: "강화하다, 지지하다, 북돋우다",
+    root: "고대 게르만어 bolster (받침 베개) → 밑을 튼튼히 받치다",
+    forms: { noun: "bolster", verb: "bolsters, bolstering, bolstered" },
+    synonyms: ["strengthen", "reinforce", "support", "buttress", "prop"],
+    antonyms: ["undermine", "weaken", "impair", "compromise"]
+  },
+  "candid": {
+    ipa: "/ˈkæn.dɪd/",
+    pos: "adj.",
+    kr: "솔직한, 숨김없는, 공정한",
+    root: "candidus (하얀, 순수한, 빛나는) → 때 묻지 않고 숨김없는",
+    forms: { noun: "candor", adv: "candidly" },
+    synonyms: ["frank", "honest", "sincere", "outspoken", "forthright"],
+    antonyms: ["deceitful", "evasive", "guarded", "disingenuous"]
+  },
+  "complacent": {
+    ipa: "/kəmˈpleɪ.sənt/",
+    pos: "adj.",
+    kr: "자기만족적인, 현실에 안주하는",
+    root: "com- (강조) + placere (기쁘게 하다) → 스스로에게 지나치게 만족함",
+    forms: { noun: "complacency", adv: "complacently" },
+    synonyms: ["smug", "self-satisfied", "contented", "unconcerned"],
+    antonyms: ["vigilant", "discontented", "critical", "ambitious"]
+  },
+  "comprehensive": {
+    ipa: "/ˌkɒm.prɪˈhen.sɪv/",
+    pos: "adj.",
+    kr: "포괄적인, 종합적인, 광범위한",
+    root: "com- (함께) + prehendere (붙잡다) → 모든 것을 함께 그러모아 쥠",
+    forms: { noun: "comprehensiveness", adv: "comprehensively" },
+    synonyms: ["exhaustive", "inclusive", "thorough", "all-embracing"],
+    antonyms: ["limited", "partial", "exclusive", "restricted"]
+  },
+  "conspicuous": {
+    ipa: "/kənˈspɪk.ju.əs/",
+    pos: "adj.",
+    kr: "눈에 띄는, 뚜렷한, 두드러진",
+    root: "com- (완전히) + specere (보다) → 누구에게나 훤히 보임",
+    forms: { noun: "conspicuousness", adv: "conspicuously" },
+    synonyms: ["prominent", "noticeable", "evident", "salient", "striking"],
+    antonyms: ["inconspicuous", "obscure", "hidden", "unobtrusive"]
+  },
+  "detrimental": {
+    ipa: "/ˌdet.rɪˈmen.təl/",
+    pos: "adj.",
+    kr: "해로운, 유해한, 손실을 가져오는",
+    root: "de- (떨어져) + terere (마찰하다, 닳게 하다) → 닳아 없어지게 갉아먹음",
+    forms: { noun: "detriment", adv: "detrimentally" },
+    synonyms: ["harmful", "damaging", "injurious", "pernicious", "deleterious"],
+    antonyms: ["beneficial", "advantageous", "favorable", "salutary"]
+  },
+  "empirical": {
+    ipa: "/ɪmˈpɪr.ɪ.kəl/",
+    pos: "adj.",
+    kr: "실증적인, 경험에 의거한",
+    root: "그리스어 empeiria (경험, 숙련)",
+    forms: { noun: "empiricism, empiricist", adv: "empirically" },
+    synonyms: ["observational", "experimental", "verifiable", "practical"],
+    antonyms: ["theoretical", "hypothetical", "speculative", "conjectural"]
+  },
+  "ephemeral": {
+    ipa: "/ɪˈfem.ər.əl/",
+    pos: "adj.",
+    kr: "수명이 짧은, 덧없는, 순식간의",
+    root: "epi- (하루 동안에) + hemera (날, day) → 단 하루살이의",
+    forms: { noun: "ephemerality", adv: "ephemerally" },
+    synonyms: ["transient", "fleeting", "evanescent", "temporary", "short-lived"],
+    antonyms: ["permanent", "eternal", "perpetual", "enduring"]
+  },
+  "exacerbate": {
+    ipa: "/ɪɡˈzæs.ə.beɪt/",
+    pos: "v.",
+    kr: "악화시키다, 가중시키다, 격분시키다",
+    root: "ex- (완전히) + acerbus (쓴, 거친, 가혹한) → 더욱 가혹하게 만들다",
+    forms: { noun: "exacerbation", verb: "exacerbates, exacerbating, exacerbated" },
+    synonyms: ["aggravate", "worsen", "inflame", "compound"],
+    antonyms: ["alleviate", "ameliorate", "relieve", "mitigate"]
+  },
+  "exemplify": {
+    ipa: "/ɪɡˈzem.plɪ.faɪ/",
+    pos: "v.",
+    kr: "전형적인 예가 되다, 예시하다",
+    root: "exemplum (모범, 예시) + facere (만들다)",
+    forms: { noun: "exemplification", adj: "exemplary", verb: "exemplifies, exemplifying, exemplified" },
+    synonyms: ["typify", "illustrate", "epitomize", "represent", "embody"],
+    antonyms: ["misrepresent", "obscure", "distort"]
+  },
+  "lucrative": {
+    ipa: "/ˈluː.krə.tɪv/",
+    pos: "adj.",
+    kr: "수익성이 좋은, 돈벌이가 되는",
+    root: "lucrum (이득, 금전적 이익) → 큰 이문을 남김",
+    forms: { noun: "lucrativeness", adv: "lucratively" },
+    synonyms: ["profitable", "gainful", "remunerative", "rewarding"],
+    antonyms: ["unprofitable", "loss-making", "fruitless"]
+  },
+  "meticulous": {
+    ipa: "/məˈtɪk.jə.ləs/",
+    pos: "adj.",
+    kr: "꼼꼼한, 세심한, 빈틈없는",
+    root: "metus (두려움) → 실수할까 두려워 극도로 조심함",
+    forms: { noun: "meticulousness", adv: "meticulously" },
+    synonyms: ["scrupulous", "painstaking", "punctilious", "fastidious", "thorough"],
+    antonyms: ["careless", "sloppy", "negligent", "slapdash"]
+  },
+  "mitigate": {
+    ipa: "/ˈmɪt.ɪ.ɡeɪt/",
+    pos: "v.",
+    kr: "완화하다, 경감시키다, 누그러뜨리다",
+    root: "mitis (부드러운, 순한) + agere (만들다) → 성질을 온화하게 만듦",
+    forms: { noun: "mitigation", adj: "mitigative, unmitigated", verb: "mitigates, mitigating, mitigated" },
+    synonyms: ["alleviate", "attenuate", "diminish", "assuage", "soften"],
+    antonyms: ["aggravate", "intensify", "worsen", "exacerbate"]
+  },
+  "pervasive": {
+    ipa: "/pəˈveɪ.sɪv/",
+    pos: "adj.",
+    kr: "만연한, 구석구석 스며드는",
+    root: "per- (완전히) + vadere (가다) → 구석구석 퍼져나감",
+    forms: { noun: "pervasiveness", verb: "pervade", adv: "pervasively" },
+    synonyms: ["ubiquitous", "omnipresent", "permeating", "widespread"],
+    antonyms: ["rare", "scarce", "localized", "isolated"]
+  },
+  "pragmatic": {
+    ipa: "/præɡˈmæt.ɪk/",
+    pos: "adj.",
+    kr: "실용적인, 실제적인, 현실적인",
+    root: "그리스어 pragma (행위, 사업, 실제 일)",
+    forms: { noun: "pragmatism, pragmatist", adv: "pragmatically" },
+    synonyms: ["practical", "utilitarian", "realistic", "functional"],
+    antonyms: ["idealistic", "impractical", "visionary", "utopian"]
+  },
+  "resilient": {
+    ipa: "/rɪˈzɪl.i.ənt/",
+    pos: "adj.",
+    kr: "회복력 있는, 탄력 있는, 곧 쾌활해지는",
+    root: "re- (뒤로) + salire (튀어 오르다) → 눌려도 다시 용수철처럼 튀어 오름",
+    forms: { noun: "resilience, resiliency", adv: "resiliently" },
+    synonyms: ["supple", "tough", "buoyant", "adaptable", "elastic"],
+    antonyms: ["fragile", "brittle", "vulnerable", "rigid"]
+  },
+  "scrutinize": {
+    ipa: "/ˈskruː.tɪ.naɪz/",
+    pos: "v.",
+    kr: "면밀히 조사하다, 세심히 살피다",
+    root: "scrutari (뒤지다, 샅샅이 찾다) → 쓰레기 더미라도 뒤져 찾아냄",
+    forms: { noun: "scrutiny", adj: "scrutinizing", verb: "scrutinizes, scrutinizing, scrutinized" },
+    synonyms: ["examine", "inspect", "investigate", "probe", "audit"],
+    antonyms: ["glance", "overlook", "ignore", "neglect"]
+  },
+  "ubiquitous": {
+    ipa: "/juːˈbɪk.wɪ.təs/",
+    pos: "adj.",
+    kr: "어디에나 존재하는, 도처에 있는",
+    root: "라틴어 ubique (어디에나, everywhere)",
+    forms: { noun: "ubiquity", adv: "ubiquitously" },
+    synonyms: ["omnipresent", "universal", "pervasive", "widespread"],
+    antonyms: ["rare", "unique", "absent", "scarce"]
+  },
+  "volatile": {
+    ipa: "/ˈvɒl.ə.taɪl/",
+    pos: "adj.",
+    kr: "변덕스러운, 불안정한, 휘발성의",
+    root: "volare (날아가다) → 쉽게 기체로 날아가거나 변함",
+    forms: { noun: "volatility" },
+    synonyms: ["capricious", "erratic", "unstable", "fickle", "evaporative"],
+    antonyms: ["stable", "constant", "steady", "predictable"]
+  }
+};
+
+// Function to generate dynamic etymology and forms for any word if not directly in the dictionary
+function getWordDetails(word, baseInfo = {}) {
+  const clean = word.toLowerCase().trim();
+  const known = extendedTepsVocab[clean];
+  if (known) {
+    return {
+      word: clean,
+      ipa: known.ipa,
+      pos: known.pos,
+      kr: known.kr,
+      root: known.root,
+      forms: known.forms,
+      synonyms: known.synonyms,
+      antonyms: known.antonyms
+    };
+  }
+
+  // Derive morphological forms dynamically
+  const sForm = clean.endsWith('y') && !/[aeiou]y$/.test(clean) ? clean.slice(0, -1) + 'ies' : clean + 's';
+  const edForm = clean.endsWith('e') ? clean + 'd' : clean + 'ed';
+  const ingForm = clean.endsWith('e') ? clean.slice(0, -1) + 'ing' : clean + 'ing';
+  const lyForm = clean.endsWith('y') ? clean.slice(0, -1) + 'ily' : clean + 'ly';
+  const tionForm = clean.endsWith('e') ? clean.slice(0, -1) + 'ation' : clean + 'ation';
+
+  return {
+    word: clean,
+    ipa: baseInfo.ipa || `/${clean}/`,
+    pos: baseInfo.pos || '단어',
+    kr: baseInfo.kr || '사전 조회 단어',
+    root: `어근 분석: '${clean}'의 형태학적 구성 요소`,
+    forms: {
+      noun: baseInfo.pos?.includes('v') ? `${tionForm} (명사형)` : `${clean}ness (명사형 추정)`,
+      verb: `${clean}, ${sForm}, ${ingForm}, ${edForm}`,
+      adj: `${clean}ive, ${clean}able (형용사형 추정)`,
+      adv: `${lyForm} (부사형 추정)`
+    },
+    synonyms: ["유사 표현 사전 조회 중"],
+    antonyms: ["반대 표현 사전 조회 중"]
+  };
+}
+
+
+  /* --- 2. TEPS Patterns & Level Data --- */
+  // TEPS Context Patterns by Score Level & Domain
+// Each template conforms to authentic TEPS test style: academic register, precise logic, max 2 sentences.
+
+const TEPS_LEVELS = {
+  250: {
+    label: "250점대 (기초/입문)",
+    badge: "TEPS 250",
+    desc: "기본 복문 및 일상·실용 시사 구문 중심",
+    complexity: "moderate",
+    sentenceCount: "1~2문장"
+  },
+  327: {
+    label: "327점 목표 (표준/기본값)",
+    badge: "TEPS 327 ★",
+    desc: "대학원/전문연/공무원 기준: 정제된 논리적 복문 및 학술적 어휘",
+    complexity: "standard-teps",
+    sentenceCount: "1~2문장"
+  },
+  387: {
+    label: "387점대 (중상급)",
+    badge: "TEPS 387",
+    desc: "5급 공채·외교관 후보자 기준: 분사구문, 동격절 및 심층 분석 구문",
+    complexity: "advanced-teps",
+    sentenceCount: "1~2문장"
+  },
+  450: {
+    label: "450점대 (상급/고득점)",
+    badge: "TEPS 450",
+    desc: "의치학 전문대학원·통번역 기준: 도치, 복합 관계사 및 압축 학술 구문",
+    complexity: "superior-teps",
+    sentenceCount: "1~2문장"
+  },
+  500: {
+    label: "500점+ (최상급/만점권)",
+    badge: "TEPS 500+",
+    desc: "네이티브 학술 논문 수준: 고난도 수사의문, 무생물 주어 및 은유적 논변",
+    complexity: "mastery",
+    sentenceCount: "1~2문장"
+  }
+};
+
+const TEPS_DOMAINS = [
+  {
+    id: "humanities",
+    name: "인문·역사·철학",
+    enName: "Humanities & Philosophy",
+    icon: "book-open",
+    color: "#6366f1"
+  },
+  {
+    id: "social",
+    name: "사회·경제·경영",
+    enName: "Social Science & Economics",
+    icon: "briefcase",
+    color: "#0ea5e9"
+  },
+  {
+    id: "science",
+    name: "자연과학·의학·생태",
+    enName: "Natural Science & Medicine",
+    icon: "flask-conical",
+    color: "#10b981"
+  },
+  {
+    id: "tech",
+    name: "기술·공학·인공지능",
+    enName: "Technology & AI",
+    icon: "cpu",
+    color: "#f59e0b"
+  },
+  {
+    id: "culture",
+    name: "시사·법률·문화",
+    enName: "Current Affairs & Law",
+    icon: "scale",
+    color: "#ec4899"
+  }
+];
+
+// Rich sentence template database categorized by level, domain and sentence style
+// {WORD} is replaced by target word, {WORD_CAP} by capitalized target word, {WORD_KR} with Korean definition
+const TEMPLATES = {
+  // Domain 1: Humanities & Philosophy
+  humanities: {
+    250: [
+      {
+        en: "Historical records show that ancient scholars could not easily {WORD} their traditional beliefs. Consequently, conflicts often arose when new philosophical ideas were introduced.",
+        kr: "역사 기록에 따르면 고대 학자들은 자신들의 전통적 신념을 쉽게 {WORD_KR}할 수 없었습니다. 그 결과 새로운 철학 사상이 도입될 때 종종 갈등이 발생했습니다."
+      },
+      {
+        en: "The historian pointed out that while the policy seemed effective initially, it was essentially a {WORD} decision. The archives clearly reflect this viewpoint.",
+        kr: "역사가에 따르면 그 정책이 초기에는 효과적인 것처럼 보였으나, 본질적으로는 {WORD_KR}한 결정이었다고 지적했습니다. 기록 보관소는 이러한 관점을 명확히 반영합니다."
+      },
+      {
+        en: "Many classical authors struggled to {WORD} their artistic principles in times of severe censorship.",
+        kr: "많은 고전 작가들은 엄격한 검열의 시대에 자신들의 예술적 원칙을 {WORD_KR}하기 위해 고군분투했습니다."
+      }
+    ],
+    327: [
+      {
+        en: "Philosophical treatises of the Enlightenment sought to {WORD} established dogmas through rational discourse. This rigorous inquiry subsequently laid the groundwork for modern secular institutions.",
+        kr: "계몽주의 철학 논문들은 합리적인 담론을 통해 기존의 교조를 {WORD_KR}하고자 모색했습니다. 이러한 엄밀한 탐구는 이후 현대 세속 기관들의 기틀을 다졌습니다."
+      },
+      {
+        en: "Although the historical narrative appears continuous on the surface, a careful textual critique reveals a {WORD} assumption underlying the chronicler's thesis.",
+        kr: "비록 역사적 서사가 표면상으로는 연속적인 것처럼 보일지라도, 신중한 텍스트 비평은 연대기 작가의 논지 기저에 깔린 {WORD_KR}한 전제를 드러냅니다."
+      },
+      {
+        en: "Renaissance humanists refused to regard classical antiquity as a static relic, endeavoring instead to {WORD} its timeless philosophical virtues.",
+        kr: "르네상스 인문주의자들은 고전 고대를 고정된 유물로 간주하기를 거부했고, 대신 그 시대를 초월한 철학적 덕목을 {WORD_KR}하고자 노력했습니다."
+      },
+      {
+        en: "The cultural historian argues that the archetype was by no means {WORD}, as documented in contemporaneous literary journals.",
+        kr: "문화사학자는 당대의 문학 잡지들에 기록된 바와 같이, 그 원형이 결코 {WORD_KR}하지 않았다고 주장합니다."
+      }
+    ],
+    387: [
+      {
+        en: "Challenging the canonical doctrine that human agency is entirely autonomous, the essay articulates why such a perspective remains inherently {WORD}. Underlying socio-cultural determinants cannot be dismissed lightly.",
+        kr: "인간의 행위 주체성이 완전히 자율적이라는 정경적 교리에 도전하면서, 그 논문은 왜 그러한 관점이 본질적으로 {WORD_KR}한 상태로 남아 있는지를 조리 있게 설명합니다. 기저에 자리한 사회문화적 결정 요인은 가볍게 무시될 수 없습니다."
+      },
+      {
+        en: "Reflecting upon medieval historiography, contemporary academics strive to {WORD} speculative myth from verifiable archival evidence.",
+        kr: "중세 역사학을 되돌아보며, 현대 학자들은 검증 가능한 기록 보관 증거로부터 사변적인 신화를 {WORD_KR}하고자 부단히 애쓰고 있습니다."
+      }
+    ],
+    450: [
+      {
+        en: "Hardly had the revisionist historian attempted to {WORD} the prevailing orthodoxy than archival discoveries undermined his premise altogether. Such scholarly disputes epitomize the contentious nature of retrospective analysis.",
+        kr: "수정주의 역사학자가 지배적인 정통설을 {WORD_KR}하려 시도하자마자, 문서 기록상의 새로운 발견들이 그의 전제를 완전히 흔들어 놓았습니다. 그러한 학문적 논쟁은 소급적 분석의 논쟁적 본질을 집약적으로 보여줍니다."
+      },
+      {
+        en: "Far from being an isolated occurrence, the intellectual movement was profoundly {WORD}, permeating the entire spectrum of nineteenth-century dialectics.",
+        kr: "고립된 사건이기는커녕, 그 지적 운동은 19세기 변증법의 전 영역에 스며들 정도로 지극히 {WORD_KR}했습니다."
+      }
+    ],
+    500: [
+      {
+        en: "Were hermeneutic scholars to treat the metaphysical manuscript as merely {WORD}, they would inexorably obscure the dialectical tension between transcendental idealism and historical materialism.",
+        kr: "만약 해석학 학자들이 그 형이상학적 필사본을 단순히 {WORD_KR}한 것으로 취급한다면, 그들은 초월적 관념론과 유물론 사이의 변증법적 긴장을 피할 수 없이 흐리게 만들 것입니다."
+      }
+    ]
+  },
+
+  // Domain 2: Social Sciences & Economics
+  social: {
+    250: [
+      {
+        en: "Economic analysts warned that consumers might {WORD} their spending if inflation continues to rise. Such consumer behavior directly affects retail businesses.",
+        kr: "경제 분석가들은 인플레이션이 계속 상승하면 소비자들이 지출을 {WORD_KR}할 수도 있다고 경고했습니다. 이러한 소비자 행동은 소매업에 직접적인 영향을 미칩니다."
+      },
+      {
+        en: "The central bank decided that the market conditions were not sufficiently {WORD} to support an interest rate reduction.",
+        kr: "중앙은행은 시장 여건이 금리 인하를 뒷받침하기에 충분히 {WORD_KR}하지 않다고 판단했습니다."
+      },
+      {
+        en: "Government officials met yesterday to discuss how to {WORD} unemployment in metropolitan areas.",
+        kr: "정부 관계자들은 어제 대도시 지역의 실업률을 어떻게 {WORD_KR}할 것인지 논의하기 위해 회합을 가졌습니다."
+      }
+    ],
+    327: [
+      {
+        en: "In response to abrupt currency devaluation, policymakers introduced targeted subsidies to {WORD} the acute financial burden on low-income households.",
+        kr: "급격한 통화 가치 하락에 대응하여, 정책 입안자들은 저소득층 가구의 극심한 재정적 부담을 {WORD_KR}하기 위한 맞춤형 보조금을 도입했습니다."
+      },
+      {
+        en: "Economists contend that sustained corporate transparency is inherently {WORD} to restoring foreign investors' waning confidence in emerging markets.",
+        kr: "경제학자들은 지속적인 기업 투명성이 신흥 시장에 대한 외국인 투자자들의 줄어드는 신뢰를 회복하는 데 본질적으로 {WORD_KR}하다고 주장합니다."
+      },
+      {
+        en: "The sociological study concludes that demographic shifts will inevitably {WORD} public welfare expenditure over the coming decades.",
+        kr: "그 사회학적 연구는 향후 수십 년간 인구통계학적 변화가 공공 복지 지출을 불가피하게 {WORD_KR}할 것이라는 결론을 내립니다."
+      },
+      {
+        en: "Despite aggressive monetary tightening, the labor market exhibited a {WORD} resilience that defied orthodox forecasting models.",
+        kr: "공격적인 통화 긴축에도 불구하고, 노동 시장은 정통 예측 모델을 무색하게 만드는 {WORD_KR}한 회복력을 보였습니다."
+      }
+    ],
+    387: [
+      {
+        en: "Having analyzed extensive macroeconomic indicators across twenty OECD economies, the task force demonstrated how fiscal austerity can unexpectedly {WORD} structural inequality. Consequently, balanced redistributive mechanisms remain indispensable.",
+        kr: "20개 OECD 국가의 광범위한 거시경제 지표를 분석한 후, 태스크포스는 재정 긴축이 어떻게 구조적 불평등을 뜻밖에 {WORD_KR}할 수 있는지를 입증했습니다. 따라서 균형 잡힌 재분배 기제는 여전히 필수불가결합니다."
+      },
+      {
+        en: "The corporate conglomerate adopted a noticeably {WORD} posture toward regulatory compliance, dreading punitive antitrust sanctions.",
+        kr: "그 대기업 집단은 징벌적 반독점 제재를 두려워하여 규제 준수에 대해 눈에 띄게 {WORD_KR}한 태세를 취했습니다."
+      }
+    ],
+    450: [
+      {
+        en: "Under no circumstances should central monetary authorities underestimate how psychological volatility can {WORD} institutional liquidity during systemic banking crises.",
+        kr: "시스템적 은행 위기 상황에서 심리적 변동성이 어떻게 제도적 유동성을 {WORD_KR}할 수 있는지를 중앙 통화 당국은 어떤 상황에서도 결코 과소평가해서는 안 됩니다."
+      },
+      {
+        en: "Rarely does a developing nation cultivate {WORD} financial resilience without first overhauling its bureaucratic corruption and legal transparency.",
+        kr: "관료적 부패와 사법적 투명성을 먼저 전면 쇄신하지 않고서 개발도상국이 {WORD_KR}한 금융 회복력을 배양하는 경우는 거의 없습니다."
+      }
+    ],
+    500: [
+      {
+        en: "The paradox of contemporary neoliberal regimes lies in their tendency to {WORD} market deregulation while tacitly relying upon interventionist state guarantees whenever sovereign defaults loom.",
+        kr: "현대 신자유주의 체제의 역설은, 국가 부도 위기가 닥칠 때마다 개입주의적 국가 보증에 암묵적으로 의존하면서도 한편으로는 시장 규제 완화를 {WORD_KR}하는 경향에 있습니다."
+      }
+    ]
+  },
+
+  // Domain 3: Natural Sciences & Medicine
+  science: {
+    250: [
+      {
+        en: "Biologists discovered that certain desert plants can {WORD} extreme heat by storing water in their stems. This adaptation helps them survive for years without rain.",
+        kr: "생물학자들은 특정 사막 식물이 줄기에 물을 저장함으로써 극심한 열기를 {WORD_KR}할 수 있다는 사실을 발견했습니다. 이러한 적응은 비 없이도 수년 동안 생존하도록 돕습니다."
+      },
+      {
+        en: "The medical report indicated that regular exercise is {WORD} for reducing cardiovascular risks.",
+        kr: "그 의학 보고서는 규칙적인 운동이 심혈관 질환의 위험을 줄이는 데 {WORD_KR}하다고 명시했습니다."
+      },
+      {
+        en: "Researchers performed multiple laboratory tests to {WORD} whether the chemical compound was non-toxic.",
+        kr: "연구원들은 해당 화합물이 무독성인지를 {WORD_KR}하기 위해 여러 차례의 실험실 테스트를 수행했습니다."
+      }
+    ],
+    327: [
+      {
+        en: "Clinical trials demonstrated that the novel therapeutic compound could significantly {WORD} chronic inflammatory responses in mammalian models. Researchers are now preparing for phase three clinical evaluation.",
+        kr: "임상 시험을 통해 이 신규 치료 화합물이 포유류 모델에서 만성 염증 반응을 유의미하게 {WORD_KR}할 수 있음이 입증되었습니다. 연구진은 현재 3상 임상 평가를 준비하고 있습니다."
+      },
+      {
+        en: "Environmental scientists argue that marine biodiversity remains acutely {WORD} to subtle anthropogenic temperature shifts.",
+        kr: "환경과학자들은 해양 생물 다양성이 미묘한 인위적 온도 변화에 극도로 {WORD_KR}한 상태로 남아 있다고 주장합니다."
+      },
+      {
+        en: "Epidemiological surveillance was intensified to {WORD} the potential transmission pathways of the emerging pathogen.",
+        kr: "신종 병원체의 잠재적 전파 경로를 {WORD_KR}하기 위해 역학 감시 체계가 대폭 강화되었습니다."
+      },
+      {
+        en: "The genetic sequencing revealed a {WORD} variation in the regulatory sequence, accounting for cellular resistance.",
+        kr: "유전자 염기서열 분석 결과 조절 서열에서 {WORD_KR}한 변이가 밝혀졌으며, 이는 세포 저항성을 설명해 줍니다."
+      }
+    ],
+    387: [
+      {
+        en: "Subjecting the synthetic polymer to intense hydrostatic pressure, the biophysicists confirmed its {WORD} structural stability under conditions replicating deep-sea hydrothermal vents.",
+        kr: "합성 중합체에 강력한 정수압을 가함으로써, 생물물리학자들은 심해 열수구를 모사한 극한 조건 하에서 그것의 {WORD_KR}한 구조적 안정성을 확인했습니다."
+      },
+      {
+        en: "The neuroscientists hypothesized that sleep deprivation would inevitably {WORD} cognitive plasticity in the hippocampus, a conjecture corroborated by functional MRI imaging.",
+        kr: "신경과학자들은 수면 부족이 해마의 인지적 가소성을 불가피하게 {WORD_KR}할 것이라는 가설을 세웠으며, 이 추측은 기능적 MRI 영상에 의해 실증되었습니다."
+      }
+    ],
+    450: [
+      {
+        en: "Not until longitudinal immunological data became accessible did oncologists recognize how {WORD} the targeted monoclonal antibody was in preventing metastatic recurrence.",
+        kr: "장기적인 면역학적 데이터에 접근할 수 있게 되고 나서야 비로소 종양학자들은 그 표적 단일클론항체가 전이성 재발을 예방하는 데 얼마나 {WORD_KR}한지 인식하게 되었습니다."
+      },
+      {
+        en: "Were climate feedback loops to surpass the ecological tipping point, no geoengineering solution would suffice to {WORD} catastrophic biosphere degradation.",
+        kr: "만약 기후 되먹임 고리가 생태학적 임계점을 넘어서게 된다면, 파국적인 생물권 황폐화를 {WORD_KR}하기에 어떤 지구공학적 해결책도 충분하지 못할 것입니다."
+      }
+    ],
+    500: [
+      {
+        en: "The subtle thermodynamic equilibrium observed in macromolecular folding cannot be construed as {WORD}, given the myriad quantum fluctuations governing molecular conformational dynamics.",
+        kr: "거대 분자 접힘에서 관찰되는 미묘한 열역학적 평형은 분자의 형태 역학을 지배하는 무수한 양자 요동을 고려할 때 결코 {WORD_KR}한 것으로 해석될 수 없습니다."
+      }
+    ]
+  },
+
+  // Domain 4: Technology & AI
+  tech: {
+    250: [
+      {
+        en: "Software engineers worked late to {WORD} the serious bugs before the application was released to the public. Their quick response prevented system crashes.",
+        kr: "소프트웨어 엔지니어들은 애플리케이션이 대중에게 공개되기 전에 심각한 버그들을 {WORD_KR}하기 위해 늦게까지 일했습니다. 그들의 빠른 대처 덕분에 시스템 다운을 막았습니다."
+      },
+      {
+        en: "The newly developed battery technology is considered very {WORD} because of its low manufacturing cost.",
+        kr: "새로 개발된 배터리 기술은 낮은 제조 원가 덕분에 매우 {WORD_KR}한 것으로 평가받습니다."
+      },
+      {
+        en: "Tech companies are trying to {WORD} collaboration between human creators and artificial intelligence.",
+        kr: "기술 기업들은 인간 창작자와 인공지능 간의 협업을 {WORD_KR}하기 위해 노력하고 있습니다."
+      }
+    ],
+    327: [
+      {
+        en: "As algorithmic recommendation engines become pervasive, data ethicists urge regulatory bodies to {WORD} algorithmic bias that distorts civic information. Transparency audits are deemed essential.",
+        kr: "알고리즘 추천 엔진이 보편화됨에 따라, 데이터 윤리학자들은 시민들의 정보 습득을 왜곡하는 알고리즘 편향을 {WORD_KR}할 것을 규제 당국에 촉구하고 있습니다. 투명성 감사가 필수적으로 여겨집니다."
+      },
+      {
+        en: "Cloud computing infrastructure proved remarkably {WORD} during sudden surges in network traffic, ensuring uninterrupted service delivery.",
+        kr: "클라우드 컴퓨팅 인프라는 네트워크 트래픽의 급격한 폭증 속에서도 두드러지게 {WORD_KR}함을 입증하며 중단 없는 서비스 제공을 보장했습니다."
+      },
+      {
+        en: "The cybersecurity firm implemented quantum-resistant encryption protocols to {WORD} critical government servers against sophisticated cyber espionage.",
+        kr: "그 사이버 보안 기업은 정교한 사이버 간첩 활동으로부터 핵심 정부 서버를 {WORD_KR}하기 위해 양자 내성 암호화 프로토콜을 도입했습니다."
+      },
+      {
+        en: "The automation framework operates in a largely {WORD} manner, requiring minimal human intervention under standard parameters.",
+        kr: "그 자동화 프레임워크는 표준 매개변수 하에서 사람의 개입을 거의 필요로 하지 않고 대체로 {WORD_KR}한 방식으로 작동합니다."
+      }
+    ],
+    387: [
+      {
+        en: "By synthesizing federated learning with differential privacy, the researchers managed to {WORD} sensitive patient telemetry without compromising diagnostic accuracy.",
+        kr: "연합 학습과 차등 정보보호 기법을 융합함으로써, 연구원들은 진단 정확도를 저해하지 않으면서도 민감한 환자 원격 측정 데이터를 {WORD_KR}해 낼 수 있었습니다."
+      },
+      {
+        en: "The proliferation of synthetic media presents a {WORD} challenge to judicial evidence validation, necessitating advanced cryptographic watermarking.",
+        kr: "합성 미디어의 급증은 사법적 증거 검증에 {WORD_KR}한 도전을 제기하고 있으며, 이에 따라 첨단 암호화 워터마킹 기술이 요구되고 있습니다."
+      }
+    ],
+    450: [
+      {
+        en: "Seldom does a software paradigm shift prove so {WORD} as the transition from monolithic legacy systems to distributed microservices architecture.",
+        kr: "소프트웨어 패러다임 전환이 모놀리식 레거시 시스템에서 분산형 마이크로서비스 아키텍처로의 전환만큼 {WORD_KR}한 것으로 드러나는 경우는 좀처럼 드뭅니다."
+      },
+      {
+        en: "Had the engineering team failed to {WORD} the hardware vulnerability prior to mass fabrication, the commercial repercussions would have been catastrophic.",
+        kr: "엔지니어링 팀이 대량 양산 전에 하드웨어 취약점을 {WORD_KR}하지 못했더라면, 상업적 파장은 파국에 이르렀을 것입니다."
+      }
+    ],
+    500: [
+      {
+        en: "Only through an epistemological reckoning with generative architectures can computer scientists illuminate whether neural networks possess genuine semantic comprehension or merely an {WORD} approximation of human cognition.",
+        kr: "생성형 아키텍처에 대한 인식론적 성찰을 거치고 나서야 컴퓨터 과학자들은 인공신경망이 진정한 의미론적 이해력을 갖추고 있는지, 아니면 단지 인간 인지에 대한 {WORD_KR}한 근사치에 불과한지를 규명할 수 있을 것입니다."
+      }
+    ]
+  },
+
+  // Domain 5: Current Affairs, Law & Culture
+  culture: {
+    250: [
+      {
+        en: "The city council voted to {WORD} the controversial transit tax after months of public protests. Citizens welcomed the new decision warmly.",
+        kr: "수개월에 걸친 시민들의 항의 시위 끝에 시의회는 논란이 된 대중교통세를 {WORD_KR}하기로 가결했습니다. 시민들은 그 새로운 결정을 따뜻하게 반겼습니다."
+      },
+      {
+        en: "The ambassador emphasized that diplomatic negotiation is the only {WORD} pathway toward lasting regional peace.",
+        kr: "대사는 외교적 협상이 지속적인 지역 평화를 향한 유일하게 {WORD_KR}한 길이라고 강조했습니다."
+      },
+      {
+        en: "Cultural festivals help {WORD} mutual understanding among diverse communities living in the city.",
+        kr: "문화 축제는 도시에 거주하는 다양한 공동체 간의 상호 이해를 {WORD_KR}하는 데 도움을 줍니다."
+      }
+    ],
+    327: [
+      {
+        en: "Legal scholars argue that the proposed statute may {WORD} upon constitutional protections concerning freedom of expression. Consequently, judicial review is anticipated before its formal enactment.",
+        kr: "법학자들은 제안된 법령이 표현의 자유에 관한 헌법적 보호를 {WORD_KR}할 수 있다고 주장합니다. 이에 따라 법령의 공식 제정 전에 사법 심사가 예상됩니다."
+      },
+      {
+        en: "The documentary explores how consumerist globalization has fostered an increasingly {WORD} urban culture across developing metropolises.",
+        kr: "그 다큐멘터리는 소비주의적 세계화가 개발도상국 대도시들 전역에서 어떻게 점점 더 {WORD_KR}한 도시 문화를 조성해 왔는지를 탐구합니다."
+      },
+      {
+        en: "The defense attorney presented newly unsealed surveillance logs to {WORD} his client against wrongful fraud allegations.",
+        kr: "변호인은 의뢰인에게 씌워진 부당한 사기 혐의에 대해 결백을 {WORD_KR}하기 위하여 새로 비밀 해제된 감시 기록을 제출했습니다."
+      },
+      {
+        en: "Despite public outcry, the regulatory panel adopted an ostensibly {WORD} position on copyright enforcement guidelines.",
+        kr: "대중의 격렬한 반발에도 불구하고, 규제 위원회는 저작권 집행 지침에 관하여 표면상 {WORD_KR}한 입장을 취했습니다."
+      }
+    ],
+    387: [
+      {
+        en: "Navigating contentious multilateral treaties, diplomats must skillfully {WORD} national interests with global humanitarian mandates, lest negotiations break down irreparably.",
+        kr: "논쟁적인 다자간 조약을 협상하면서, 외교관들은 협상이 돌이킬 수 없이 결렬되지 않도록 국가적 이익과 글로벌 인도주의적 책무를 능숙하게 {WORD_KR}해야만 합니다."
+      },
+      {
+        en: "The Supreme Court justice delivered an unusually {WORD} dissenting opinion, reproaching the majority for departing from longstanding jurisprudence.",
+        kr: "대법관은 다수의견이 오랜 판례법에서 이탈한 것을 준열히 질타하며 이례적으로 {WORD_KR}한 반대의견을 개진했습니다."
+      }
+    ],
+    450: [
+      {
+        en: "Little did constitutional jurists suspect that the administrative decree would so overtly {WORD} the statutory checks and balances established centuries ago.",
+        kr: "그 행정 명령이 수세기 전에 확립된 법률상의 견제와 균형을 그토록 노골적으로 {WORD_KR}하게 될 줄은 헌법 학자들도 거의 짐작하지 못했습니다."
+      },
+      {
+        en: "Notwithstanding intense political pressure, the investigative tribunal remained steadfastly {WORD}, refusing to alter its final verdict.",
+        kr: "극심한 정치적 압력에도 불구하고, 조사 재판소는 최종 평결을 변경하기를 단호히 거부하며 확고하게 {WORD_KR}한 태도를 유지했습니다."
+      }
+    ],
+    500: [
+      {
+        en: "To characterize the prevailing sociological malaise as mere civic indifference is to {WORD} the deep structural disenfranchisement experienced by marginalized constituencies across modern post-industrial societies.",
+        kr: "만연한 사회학적 불안을 단순한 시민적 무관심으로 치부하는 것은, 현대 탈산업 사회 전반에서 소외 계층이 겪고 있는 깊은 구조적 박탈을 {WORD_KR}하는 것과 다름없습니다."
+      }
+    ]
+  }
+};
+
+
+  /* --- 3. English Lemmatizer --- */
+  // Simple rule-based English lemmatizer & POS helper for TEPS vocabulary
+
+const IRREGULAR_VERBS = {
+  arisen: 'arise', arose: 'arise',
+  been: 'be', was: 'be', were: 'be',
+  become: 'become', became: 'become',
+  began: 'begin', begun: 'begin',
+  bent: 'bend',
+  bound: 'bind',
+  bitten: 'bite', bit: 'bite',
+  blown: 'blow', blew: 'blow',
+  broken: 'break', broke: 'break',
+  brought: 'bring',
+  built: 'build',
+  bought: 'buy',
+  caught: 'catch',
+  chosen: 'choose', chose: 'choose',
+  came: 'come',
+  done: 'do', did: 'do',
+  drawn: 'draw', drew: 'draw',
+  driven: 'drive', drove: 'drive',
+  eaten: 'eat', ate: 'eat',
+  fallen: 'fall', fell: 'fall',
+  felt: 'feel',
+  found: 'find',
+  flown: 'fly', flew: 'fly',
+  forgotten: 'forget', forgot: 'forget',
+  forgiven: 'forgive', forgave: 'forgive',
+  frozen: 'freeze', froze: 'freeze',
+  gotten: 'get', got: 'get',
+  given: 'give', gave: 'give',
+  gone: 'go', went: 'go',
+  grown: 'grow', grew: 'grow',
+  heard: 'hear',
+  hidden: 'hide', hid: 'hide',
+  held: 'hold',
+  kept: 'keep',
+  known: 'know', knew: 'know',
+  laid: 'lay',
+  led: 'lead',
+  left: 'leave',
+  lent: 'lend',
+  lost: 'lose',
+  made: 'make',
+  meant: 'mean',
+  met: 'meet',
+  paid: 'pay',
+  put: 'put',
+  read: 'read',
+  ridden: 'ride', rode: 'ride',
+  risen: 'rise', rose: 'rise',
+  run: 'run', ran: 'run',
+  said: 'say',
+  seen: 'see', saw: 'see',
+  sought: 'seek',
+  sold: 'sell',
+  sent: 'send',
+  set: 'set',
+  shown: 'show', showed: 'show',
+  shut: 'shut',
+  spoken: 'speak', spoke: 'speak',
+  spent: 'spend',
+  stood: 'stand',
+  stolen: 'steal', stole: 'steal',
+  struck: 'strike',
+  taken: 'take', took: 'take',
+  taught: 'teach',
+  told: 'tell',
+  thought: 'think',
+  thrown: 'throw', threw: 'throw',
+  understood: 'understand',
+  worn: 'wear', wore: 'wear',
+  won: 'win',
+  written: 'write', wrote: 'write'
+};
+
+const IRREGULAR_NOUNS = {
+  children: 'child',
+  people: 'person',
+  men: 'man',
+  women: 'woman',
+  teeth: 'tooth',
+  feet: 'foot',
+  mice: 'mouse',
+  crises: 'crisis',
+  theses: 'thesis',
+  analyses: 'analysis',
+  phenomena: 'phenomenon',
+  criteria: 'criterion',
+  hypotheses: 'hypothesis',
+  media: 'medium',
+  data: 'datum'
+};
+
+function cleanWord(rawWord) {
+  if (!rawWord) return '';
+  return rawWord.toLowerCase().replace(/^[^\w]+|[^\w]+$/g, '').trim();
+}
+
+function lemmatize(word) {
+  const clean = cleanWord(word);
+  if (!clean) return '';
+  
+  if (IRREGULAR_VERBS[clean]) return IRREGULAR_VERBS[clean];
+  if (IRREGULAR_NOUNS[clean]) return IRREGULAR_NOUNS[clean];
+
+  // Plurals and 3rd person singular verbs
+  if (clean.endsWith('ies') && clean.length > 4) {
+    return clean.slice(0, -3) + 'y';
+  }
+  if (clean.endsWith('es') && (clean.endsWith('shes') || clean.endsWith('ches') || clean.endsWith('xes') || clean.endsWith('ses'))) {
+    return clean.slice(0, -2);
+  }
+  if (clean.endsWith('s') && !clean.endsWith('ss') && clean.length > 3) {
+    return clean.slice(0, -1);
+  }
+
+  // Past tense / past participle -ed
+  if (clean.endsWith('ied') && clean.length > 4) {
+    return clean.slice(0, -3) + 'y';
+  }
+  if (clean.endsWith('ed')) {
+    if (clean.length > 4 && clean[clean.length - 3] === clean[clean.length - 4]) {
+      // e.g. stopped -> stop
+      return clean.slice(0, -3);
+    }
+    // e.g. created -> create vs looked -> look
+    return clean.slice(0, -1); // create
+  }
+
+  // Continuous -ing
+  if (clean.endsWith('ing') && clean.length > 4) {
+    if (clean.length > 5 && clean[clean.length - 4] === clean[clean.length - 5]) {
+      return clean.slice(0, -4);
+    }
+    return clean.slice(0, -3);
+  }
+
+  // Adverb -ly
+  if (clean.endsWith('ly') && clean.length > 4) {
+    if (clean.endsWith('ily')) return clean.slice(0, -3) + 'y';
+    return clean.slice(0, -2);
+  }
+
+  return clean;
+}
+
+function guessWordForms(word) {
+  const base = cleanWord(word);
+  return {
+    base,
+    sForm: base.endsWith('y') && !/[aeiou]y$/.test(base) ? base.slice(0, -1) + 'ies' : base.endsWith('s') || base.endsWith('sh') || base.endsWith('ch') ? base + 'es' : base + 's',
+    ingForm: base.endsWith('e') && !base.endsWith('ee') ? base.slice(0, -1) + 'ing' : base + 'ing',
+    edForm: base.endsWith('e') ? base + 'd' : base.endsWith('y') && !/[aeiou]y$/.test(base) ? base.slice(0, -1) + 'ied' : base + 'ed',
+    lyForm: base.endsWith('y') ? base.slice(0, -1) + 'ily' : base.endsWith('ic') ? base + 'ally' : base + 'ly'
+  };
+}
+
+
+  /* --- 4. Vocab & Settings Storage --- */
+  // Vocabulary storage manager with 3-state checkbox system & safe storage fallback
+
+const STORAGE_KEY = 'teps_vocab_notebook_v1';
+const SETTINGS_KEY = 'teps_vocab_settings_v1';
+
+const VOCAB_STATUS = {
+  UNLEARNED: 0, // 빈칸 (☐)
+  LEARNING: 1,  // 반칸 (◧)
+  MASTERED: 2   // 완전 체크 (☑)
+};
+
+// Safe memory storage fallback in case localStorage is disabled or restricted (e.g. file:// or private browsing)
+const memoryStore = new Map();
+
+function safeGetItem(key) {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return window.localStorage.getItem(key);
+    }
+  } catch (e) {
+    // ignore security error
+  }
+  return memoryStore.get(key) || null;
+}
+
+function safeSetItem(key, value) {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem(key, value);
+      return;
+    }
+  } catch (e) {
+    // ignore security error
+  }
+  memoryStore.set(key, value);
+}
+
+class VocabStorage {
+  constructor() {
+    this.items = this.load();
+    this.listeners = new Set();
+  }
+
+  load() {
+    try {
+      const data = safeGetItem(STORAGE_KEY);
+      if (!data) return this.getDefaultWords();
+      const parsed = JSON.parse(data);
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : this.getDefaultWords();
+    } catch (e) {
+      return this.getDefaultWords();
+    }
+  }
+
+  save() {
+    try {
+      safeSetItem(STORAGE_KEY, JSON.stringify(this.items));
+      this.notify();
+    } catch (e) {
+      console.error('Failed to save vocab:', e);
+    }
+  }
+
+  getDefaultWords() {
+    return [
+      {
+        word: "alleviate",
+        status: VOCAB_STATUS.UNLEARNED, // 빈칸
+        addedAt: Date.now() - 1000 * 60 * 60 * 4,
+        ipa: "/əˈliː.vi.eɪt/",
+        pos: "v.",
+        kr: "완화하다, 경감시키다"
+      },
+      {
+        word: "conspicuous",
+        status: VOCAB_STATUS.UNLEARNED, // 빈칸
+        addedAt: Date.now() - 1000 * 60 * 60 * 3,
+        ipa: "/kənˈspɪk.ju.əs/",
+        pos: "adj.",
+        kr: "눈에 띄는, 뚜렷한"
+      },
+      {
+        word: "lucrative",
+        status: VOCAB_STATUS.LEARNING, // 반칸
+        addedAt: Date.now() - 1000 * 60 * 60 * 2,
+        ipa: "/ˈluː.krə.tɪv/",
+        pos: "adj.",
+        kr: "수익성이 좋은, 돈벌이가 되는"
+      },
+      {
+        word: "scrutinize",
+        status: VOCAB_STATUS.LEARNING, // 반칸
+        addedAt: Date.now() - 1000 * 60 * 60 * 1,
+        ipa: "/ˈskruː.tɪ.naɪz/",
+        pos: "v.",
+        kr: "면밀히 조사하다, 세심히 살피다"
+      }
+    ];
+  }
+
+  subscribe(listener) {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  }
+
+  notify() {
+    const sorted = this.getSortedItems();
+    for (const listener of this.listeners) {
+      try {
+        listener(sorted);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+  getSortedItems() {
+    return [...this.items]
+      .filter(item => item.status !== VOCAB_STATUS.MASTERED)
+      .sort((a, b) => {
+        if (a.status !== b.status) {
+          return a.status - b.status; // 0 (빈칸) comes before 1 (반칸)
+        }
+        return (b.addedAt || 0) - (a.addedAt || 0);
+      });
+  }
+
+  addWord(word, meta = {}) {
+    if (!word) return null;
+    const clean = word.toLowerCase().trim();
+    if (!clean) return null;
+
+    const existingIndex = this.items.findIndex(item => item.word.toLowerCase() === clean);
+    if (existingIndex >= 0) {
+      this.items[existingIndex] = {
+        ...this.items[existingIndex],
+        ...meta,
+        status: VOCAB_STATUS.UNLEARNED,
+        addedAt: Date.now()
+      };
+      this.save();
+      return this.items[existingIndex];
+    }
+
+    const newItem = {
+      word: clean,
+      status: VOCAB_STATUS.UNLEARNED,
+      addedAt: Date.now(),
+      ipa: meta.ipa || `/${clean}/`,
+      pos: meta.pos || '',
+      kr: meta.kr || '사용자 추가 단어'
+    };
+
+    this.items.unshift(newItem);
+    this.save();
+    return newItem;
+  }
+
+  cycleStatus(word) {
+    const clean = word.toLowerCase().trim();
+    const item = this.items.find(i => i.word.toLowerCase() === clean);
+    if (!item) return null;
+
+    if (item.status === VOCAB_STATUS.UNLEARNED) {
+      item.status = VOCAB_STATUS.LEARNING;
+    } else if (item.status === VOCAB_STATUS.LEARNING) {
+      item.status = VOCAB_STATUS.MASTERED;
+    } else {
+      item.status = VOCAB_STATUS.UNLEARNED;
+    }
+
+    this.save();
+    return item;
+  }
+
+  removeWord(word) {
+    const clean = word.toLowerCase().trim();
+    this.items = this.items.filter(i => i.word.toLowerCase() !== clean);
+    this.save();
+  }
+
+  clearAll() {
+    this.items = [];
+    this.save();
+  }
+}
+
+class SettingsStorage {
+  static load() {
+    try {
+      const data = safeGetItem(SETTINGS_KEY);
+      if (!data) return { theme: 'light', tepsLevel: 327, apiKey: '', apiProvider: 'gemini' };
+      return JSON.parse(data);
+    } catch {
+      return { theme: 'light', tepsLevel: 327, apiKey: '', apiProvider: 'gemini' };
+    }
+  }
+
+  static save(settings) {
+    try {
+      safeSetItem(SETTINGS_KEY, JSON.stringify(settings));
+    } catch (e) {
+      console.error('Failed to save settings:', e);
+    }
+  }
+}
+
+
+  /* --- 5. Auth & Cloud Sync Manager --- */
+  // Client-Side Authentication & Cloud/Local Sync Manager (Requirement 4)
+
+const AUTH_USER_KEY = 'teps_current_user_v1';
+const LOCAL_USERS_DB_KEY = 'teps_local_users_db_v1';
+
+function safeStorageGet(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeStorageSet(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {}
+}
+
+class AuthManager {
+  constructor() {
+    this.currentUser = this.loadCurrentUser();
+    this.listeners = new Set();
+    this.syncDebounceTimer = null;
+  }
+
+  loadCurrentUser() {
+    try {
+      const raw = safeStorageGet(AUTH_USER_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  setCurrentUser(user) {
+    this.currentUser = user;
+    if (user) {
+      safeStorageSet(AUTH_USER_KEY, JSON.stringify(user));
+    } else {
+      try {
+        localStorage.removeItem(AUTH_USER_KEY);
+      } catch {}
+    }
+    this.notify();
+  }
+
+  subscribe(listener) {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  }
+
+  notify() {
+    for (const listener of this.listeners) {
+      try {
+        listener(this.currentUser);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
+
+  isLoggedIn() {
+    return !!this.currentUser && !!this.currentUser.username;
+  }
+
+  async login(username, password) {
+    const cleanUser = (username || '').trim().toLowerCase();
+    if (!cleanUser || !password) {
+      return { ok: false, message: '아이디와 비밀번호를 모두 입력해주세요.' };
+    }
+
+    // 1. Try server login if reachable
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: cleanUser, password })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.ok && data.user) {
+          const userObj = {
+            username: cleanUser,
+            password: password,
+            vocabList: data.user.vocabList || [],
+            settings: data.user.settings || {}
+          };
+          this.setCurrentUser(userObj);
+          return { ok: true, user: userObj, message: '로그인되었습니다.' };
+        }
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        if (errData.message) {
+          return { ok: false, message: errData.message };
+        }
+      }
+    } catch (netErr) {
+      // Offline or file:/// fallback to local users DB
+    }
+
+    // 2. Offline / Local fallback DB
+    const localDb = this.getLocalUsersDb();
+    if (localDb[cleanUser]) {
+      if (localDb[cleanUser].password === password) {
+        const userObj = {
+          username: cleanUser,
+          password: password,
+          vocabList: localDb[cleanUser].vocabList || [],
+          settings: localDb[cleanUser].settings || {}
+        };
+        this.setCurrentUser(userObj);
+        return { ok: true, user: userObj, message: '로컬 계정으로 로그인되었습니다.' };
+      } else {
+        return { ok: false, message: '비밀번호가 일치하지 않습니다.' };
+      }
+    }
+
+    return { ok: false, message: '존재하지 않는 아이디입니다. 회원가입을 진행해주세요.' };
+  }
+
+  async register(username, password, currentVocabList = [], currentSettings = {}) {
+    const cleanUser = (username || '').trim().toLowerCase();
+    if (!cleanUser || !password) {
+      return { ok: false, message: '아이디와 비밀번호를 모두 입력해주세요.' };
+    }
+
+    // 1. Try server register if reachable
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: cleanUser,
+          password,
+          vocabList: currentVocabList,
+          settings: currentSettings
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.ok) {
+          const userObj = {
+            username: cleanUser,
+            password,
+            vocabList: currentVocabList,
+            settings: currentSettings
+          };
+          this.setCurrentUser(userObj);
+          // Also save to local backup
+          this.saveToLocalUsersDb(cleanUser, userObj);
+          return { ok: true, user: userObj, message: '회원가입 및 동기화가 완료되었습니다!' };
+        }
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        if (errData.message) {
+          return { ok: false, message: errData.message };
+        }
+      }
+    } catch (netErr) {
+      // Offline fallback
+    }
+
+    // 2. Offline / Local fallback DB
+    const localDb = this.getLocalUsersDb();
+    if (localDb[cleanUser]) {
+      return { ok: false, message: '이미 로컬에 존재하는 아이디입니다.' };
+    }
+
+    const newUserObj = {
+      username: cleanUser,
+      password,
+      vocabList: currentVocabList,
+      settings: currentSettings
+    };
+    this.saveToLocalUsersDb(cleanUser, newUserObj);
+    this.setCurrentUser(newUserObj);
+    return { ok: true, user: newUserObj, message: '계정이 생성되었습니다 (로컬 영구 저장).' };
+  }
+
+  logout() {
+    this.setCurrentUser(null);
+  }
+
+  /**
+   * Sync latest vocab list and settings to server/local storage
+   */
+  async sync(vocabList, settings) {
+    if (!this.isLoggedIn()) return;
+
+    this.currentUser.vocabList = vocabList;
+    if (settings) this.currentUser.settings = settings;
+    safeStorageSet(AUTH_USER_KEY, JSON.stringify(this.currentUser));
+    this.saveToLocalUsersDb(this.currentUser.username, this.currentUser);
+
+    // Debounced network sync to server
+    clearTimeout(this.syncDebounceTimer);
+    this.syncDebounceTimer = setTimeout(async () => {
+      try {
+        await fetch('/api/sync', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: this.currentUser.username,
+            password: this.currentUser.password,
+            vocabList,
+            settings
+          })
+        });
+      } catch (e) {
+        // silent offline error
+      }
+    }, 500);
+  }
+
+  getLocalUsersDb() {
+    try {
+      const raw = safeStorageGet(LOCAL_USERS_DB_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  }
+
+  saveToLocalUsersDb(username, data) {
+    try {
+      const db = this.getLocalUsersDb();
+      db[username] = data;
+      safeStorageSet(LOCAL_USERS_DB_KEY, JSON.stringify(db));
+    } catch {}
+  }
+}
+
+
+  /* --- 6. Dictionary & Korean Audio Service --- */
+  
+
+
+
+// Cache to prevent redundant lookups
+const memoryCache = new Map();
+
+// High frequency common English vocabulary Korean definitions
+const CORE_KOREAN_DICT = {
+  "the": { pos: "art.", kr: "그 (정관사)", ipa: "/ðə/" },
+  "a": { pos: "art.", kr: "하나의 (부정관사)", ipa: "/ə/" },
+  "an": { pos: "art.", kr: "하나의 (부정관사)", ipa: "/æn/" },
+  "and": { pos: "conj.", kr: "그리고, ~와", ipa: "/ænd/" },
+  "or": { pos: "conj.", kr: "또는, 혹은", ipa: "/ɔːr/" },
+  "but": { pos: "conj.", kr: "하지만, 그러나", ipa: "/bʌt/" },
+  "in": { pos: "prep.", kr: "~안에, ~에서", ipa: "/ɪn/" },
+  "on": { pos: "prep.", kr: "~위에, ~에", ipa: "/ɒn/" },
+  "at": { pos: "prep.", kr: "~에, ~에서", ipa: "/æt/" },
+  "to": { pos: "prep./part.", kr: "~에게, ~로, ~하기 위해", ipa: "/tuː/" },
+  "for": { pos: "prep.", kr: "~을 위해, ~동안", ipa: "/fɔːr/" },
+  "with": { pos: "prep.", kr: "~와 함께, ~를 가지고", ipa: "/wɪð/" },
+  "by": { pos: "prep.", kr: "~에 의해, ~옆에", ipa: "/baɪ/" },
+  "from": { pos: "prep.", kr: "~로부터, ~에서", ipa: "/frɒm/" },
+  "as": { pos: "prep./conj.", kr: "~로서, ~할 때, ~처럼", ipa: "/æz/" },
+  "is": { pos: "v.", kr: "~이다, 있다", ipa: "/ɪz/" },
+  "are": { pos: "v.", kr: "~이다, 있다", ipa: "/ɑːr/" },
+  "was": { pos: "v.", kr: "~이었다, 있었다", ipa: "/wɒz/" },
+  "were": { pos: "v.", kr: "~이었다, 있었다", ipa: "/wɜːr/" },
+  "be": { pos: "v.", kr: "존재하다, ~이다", ipa: "/biː/" },
+  "been": { pos: "v.", kr: "있어왔다 (be의 과거분사)", ipa: "/biːn/" },
+  "have": { pos: "v.", kr: "가지다, 겪다", ipa: "/hæv/" },
+  "has": { pos: "v.", kr: "가지다 (3인칭 단수)", ipa: "/hæz/" },
+  "had": { pos: "v.", kr: "가졌다 (과거형)", ipa: "/hæd/" },
+  "do": { pos: "v.", kr: "하다", ipa: "/duː/" },
+  "does": { pos: "v.", kr: "하다 (3인칭 단수)", ipa: "/dʌz/" },
+  "did": { pos: "v.", kr: "했다 (과거형)", ipa: "/dɪd/" },
+  "will": { pos: "aux.", kr: "~할 것이다", ipa: "/wɪl/" },
+  "would": { pos: "aux.", kr: "~하곤 했다, ~일 것이다", ipa: "/wʊd/" },
+  "should": { pos: "aux.", kr: "~해야 한다", ipa: "/ʃʊd/" },
+  "could": { pos: "aux.", kr: "~할 수 있었다", ipa: "/kʊd/" },
+  "can": { pos: "aux.", kr: "~할 수 있다", ipa: "/kæn/" },
+  "may": { pos: "aux.", kr: "~일지도 모른다, ~해도 좋다", ipa: "/meɪ/" },
+  "might": { pos: "aux.", kr: "~일지도 모른다", ipa: "/maɪt/" },
+  "must": { pos: "aux.", kr: "~임에 틀림없다, ~해야 한다", ipa: "/mʌst/" },
+  "this": { pos: "pron./adj.", kr: "이것, 이", ipa: "/ðɪs/" },
+  "that": { pos: "pron./conj.", kr: "저것, 저, ~라는 점", ipa: "/ðæt/" },
+  "these": { pos: "pron./adj.", kr: "이것들", ipa: "/ðiːz/" },
+  "those": { pos: "pron./adj.", kr: "저것들", ipa: "/ðəʊz/" },
+  "such": { pos: "adj.", kr: "그러한, 이러한", ipa: "/sʌtʃ/" },
+  "not": { pos: "adv.", kr: "~이 아니다, 않다", ipa: "/nɒt/" },
+  "no": { pos: "adj./adv.", kr: "아니다, 전혀 없는", ipa: "/nəʊ/" },
+  "all": { pos: "adj./pron.", kr: "모든, 모두", ipa: "/ɔːl/" },
+  "any": { pos: "adj./pron.", kr: "어떤, 얼마간의", ipa: "/ˈen.i/" },
+  "some": { pos: "adj./pron.", kr: "어떤, 몇몇의", ipa: "/sʌm/" },
+  "many": { pos: "adj.", kr: "많은", ipa: "/ˈmen.i/" },
+  "much": { pos: "adj./adv.", kr: "많은, 몹시", ipa: "/mʌtʃ/" },
+  "more": { pos: "adj./adv.", kr: "더 많은, 더욱", ipa: "/mɔːr/" },
+  "most": { pos: "adj./adv.", kr: "가장 많은, 대부분의", ipa: "/məʊst/" },
+  "other": { pos: "adj./pron.", kr: "다른, 다른 것", ipa: "/ˈʌð.ər/" },
+  "their": { pos: "pron.", kr: "그들의", ipa: "/ðeər/" },
+  "there": { pos: "adv.", kr: "거기에, 그곳에", ipa: "/ðeər/" },
+  "they": { pos: "pron.", kr: "그들은, 그것들은", ipa: "/ðeɪ/" },
+  "we": { pos: "pron.", kr: "우리는", ipa: "/wiː/" },
+  "our": { pos: "pron.", kr: "우리의", ipa: "/aʊər/" },
+  "us": { pos: "pron.", kr: "우리를, 우리에게", ipa: "/ʌs/" },
+  "it": { pos: "pron.", kr: "그것은, 그것을", ipa: "/ɪt/" },
+  "its": { pos: "pron.", kr: "그것의", ipa: "/ɪts/" },
+  "he": { pos: "pron.", kr: "그는", ipa: "/hiː/" },
+  "his": { pos: "pron.", kr: "그의, 그의 것", ipa: "/hɪz/" },
+  "him": { pos: "pron.", kr: "그를, 그에게", ipa: "/hɪm/" },
+  "she": { pos: "pron.", kr: "그녀는", ipa: "/ʃiː/" },
+  "her": { pos: "pron.", kr: "그녀의, 그녀를", ipa: "/hɜːr/" },
+  "you": { pos: "pron.", kr: "당신은, 너희들은", ipa: "/juː/" },
+  "your": { pos: "pron.", kr: "당신의, 너희들의", ipa: "/jɔːr/" },
+  "i": { pos: "pron.", kr: "나는, 내가", ipa: "/aɪ/" },
+  "my": { pos: "pron.", kr: "나의", ipa: "/maɪ/" },
+  "me": { pos: "pron.", kr: "나를, 나에게", ipa: "/miː/" },
+  "time": { pos: "n.", kr: "시간, 때, 시대", ipa: "/taɪm/" },
+  "year": { pos: "n.", kr: "년, 해", ipa: "/jɪər/" },
+  "people": { pos: "n.", kr: "사람들, 국민", ipa: "/ˈpiː.pəl/" },
+  "way": { pos: "n.", kr: "방법, 길, 방식", ipa: "/weɪ/" },
+  "day": { pos: "n.", kr: "날, 하루, 낮", ipa: "/deɪ/" },
+  "man": { pos: "n.", kr: "남자, 사람, 인류", ipa: "/mæn/" },
+  "thing": { pos: "n.", kr: "것, 물건, 사물", ipa: "/θɪŋ/" },
+  "woman": { pos: "n.", kr: "여성, 여자", ipa: "/ˈwʊm.ən/" },
+  "life": { pos: "n.", kr: "삶, 생명, 인생", ipa: "/laɪf/" },
+  "child": { pos: "n.", kr: "아이, 어린이", ipa: "/tʃaɪld/" },
+  "world": { pos: "n.", kr: "세계, 세상", ipa: "/wɜːld/" },
+  "school": { pos: "n.", kr: "학교, 학파", ipa: "/skuːl/" },
+  "state": { pos: "n./v.", kr: "상태, 국가; 진술하다", ipa: "/steɪt/" },
+  "family": { pos: "n.", kr: "가족, 가문", ipa: "/ˈfæm.əl.i/" },
+  "student": { pos: "n.", kr: "학생, 연구자", ipa: "/ˈstjuː.dənt/" },
+  "group": { pos: "n.", kr: "집단, 무리, 그룹", ipa: "/ɡruːp/" },
+  "country": { pos: "n.", kr: "나라, 국가, 시골", ipa: "/ˈkʌn.tri/" },
+  "problem": { pos: "n.", kr: "문제, 난제", ipa: "/ˈprɒb.ləm/" },
+  "hand": { pos: "n./v.", kr: "손; 건네주다", ipa: "/hænd/" },
+  "part": { pos: "n.", kr: "부분, 일부, 역할", ipa: "/pɑːt/" },
+  "place": { pos: "n./v.", kr: "장소, 곳; 놓다", ipa: "/pleɪs/" },
+  "case": { pos: "n.", kr: "경우, 사례, 소송", ipa: "/keɪs/" },
+  "week": { pos: "n.", kr: "주, 일주일", ipa: "/wiːk/" },
+  "company": { pos: "n.", kr: "회사, 동행, 무리", ipa: "/ˈkʌm.pə.ni/" },
+  "system": { pos: "n.", kr: "체계, 제도, 시스템", ipa: "/ˈsɪs.təm/" },
+  "program": { pos: "n.", kr: "프로그램, 계획", ipa: "/ˈprəʊ.ɡræm/" },
+  "question": { pos: "n./v.", kr: "질문, 의문; 질문하다", ipa: "/ˈkwes.tʃən/" },
+  "work": { pos: "n./v.", kr: "일, 작품; 일하다, 작동하다", ipa: "/wɜːk/" },
+  "government": { pos: "n.", kr: "정부, 정권, 통치", ipa: "/ˈɡʌv.ən.mənt/" },
+  "number": { pos: "n.", kr: "수, 숫자, 번호", ipa: "/ˈnʌm.bər/" },
+  "night": { pos: "n.", kr: "밤, 저녁", ipa: "/naɪt/" },
+  "point": { pos: "n./v.", kr: "요점, 점; 가리키다", ipa: "/pɔɪnt/" },
+  "home": { pos: "n./adv.", kr: "집; 집으로", ipa: "/həʊm/" },
+  "water": { pos: "n.", kr: "물, 수역", ipa: "/ˈwɔː.tər/" },
+  "room": { pos: "n.", kr: "방, 여지, 공간", ipa: "/ruːm/" },
+  "mother": { pos: "n.", kr: "어머니, 모체", ipa: "/ˈmʌð.ər/" },
+  "area": { pos: "n.", kr: "지역, 구역, 분야", ipa: "/ˈeə.ri.ə/" },
+  "money": { pos: "n.", kr: "돈, 자금, 통화", ipa: "/ˈmʌn.i/" },
+  "story": { pos: "n.", kr: "이야기, 기사, 사연", ipa: "/ˈstɔː.ri/" },
+  "fact": { pos: "n.", kr: "사실, 진실, 실상", ipa: "/fækt/" },
+  "month": { pos: "n.", kr: "월, 한 달", ipa: "/mʌnθ/" },
+  "lot": { pos: "n.", kr: "많음, 제비, 부지", ipa: "/lɒt/" },
+  "right": { pos: "adj./n.", kr: "옳은, 오른쪽의; 권리", ipa: "/raɪt/" },
+  "study": { pos: "n./v.", kr: "연구, 학업; 연구하다", ipa: "/ˈstʌd.i/" },
+  "book": { pos: "n./v.", kr: "책, 도서; 예약하다", ipa: "/bʊk/" },
+  "eye": { pos: "n.", kr: "눈, 시선, 안목", ipa: "/aɪ/" },
+  "job": { pos: "n.", kr: "직업, 일, 과업", ipa: "/dʒɒb/" },
+  "word": { pos: "n.", kr: "단어, 말, 이야기", ipa: "/wɜːd/" },
+  "business": { pos: "n.", kr: "사업, 업무, 영업", ipa: "/ˈbɪz.nɪs/" },
+  "issue": { pos: "n./v.", kr: "쟁점, 사안; 발행하다", ipa: "/ˈɪʃ.uː/" },
+  "side": { pos: "n.", kr: "측면, 쪽, 편", ipa: "/saɪd/" },
+  "kind": { pos: "n./adj.", kr: "종류; 친절한", ipa: "/kaɪnd/" },
+  "head": { pos: "n./v.", kr: "머리, 책임자; 향하다", ipa: "/hed/" },
+  "house": { pos: "n.", kr: "집, 주택, 가문", ipa: "/haʊs/" },
+  "service": { pos: "n.", kr: "서비스, 봉사, 예배", ipa: "/ˈsɜː.vɪs/" },
+  "friend": { pos: "n.", kr: "친구, 동반자", ipa: "/frend/" },
+  "father": { pos: "n.", kr: "아버지, 창시자", ipa: "/ˈfɑː.ðər/" },
+  "power": { pos: "n.", kr: "힘, 권력, 전력", ipa: "/ˈpaʊ.ər/" },
+  "hour": { pos: "n.", kr: "시간, 1시간", ipa: "/aʊər/" },
+  "game": { pos: "n.", kr: "경기, 게임, 사냥감", ipa: "/ɡeɪm/" },
+  "line": { pos: "n.", kr: "선, 줄, 대사", ipa: "/laɪn/" },
+  "end": { pos: "n./v.", kr: "끝, 종말, 목적; 끝나다", ipa: "/end/" },
+  "member": { pos: "n.", kr: "회원, 구성원, 일원", ipa: "/ˈmem.bər/" },
+  "law": { pos: "n.", kr: "법, 법률, 법칙", ipa: "/lɔː/" },
+  "car": { pos: "n.", kr: "자동차, 차량", ipa: "/kɑːr/" },
+  "city": { pos: "n.", kr: "도시, 시", ipa: "/ˈsɪt.i/" },
+  "community": { pos: "n.", kr: "공동체, 사회, 지역", ipa: "/kəˈmjuː.nə.ti/" },
+  "name": { pos: "n./v.", kr: "이름; 명명하다", ipa: "/neɪm/" },
+  "president": { pos: "n.", kr: "대통령, 회장, 총장", ipa: "/ˈprez.ɪ.dənt/" },
+  "team": { pos: "n.", kr: "팀, 선수단, 조", ipa: "/tiːm/" },
+  "minute": { pos: "n.", kr: "분, 순간, 회의록", ipa: "/ˈmɪn.ɪt/" },
+  "idea": { pos: "n.", kr: "아이디어, 발상, 생각", ipa: "/aɪˈdɪə/" },
+  "kid": { pos: "n.", kr: "아이, 녀석", ipa: "/kɪd/" },
+  "body": { pos: "n.", kr: "몸, 신체, 본체", ipa: "/ˈbɒd.i/" },
+  "information": { pos: "n.", kr: "정보, 지식, 통지", ipa: "/ˌɪn.fəˈmeɪ.ʃən/" },
+  "back": { pos: "n./adv.", kr: "등, 뒤; 뒤로", ipa: "/bæk/" },
+  "parent": { pos: "n.", kr: "부모, 어버이", ipa: "/ˈpeə.rənt/" },
+  "face": { pos: "n./v.", kr: "얼굴, 표면; 직면하다", ipa: "/feɪs/" },
+  "others": { pos: "pron.", kr: "다른 사람들, 다른 것들", ipa: "/ˈʌð.əz/" },
+  "level": { pos: "n./adj.", kr: "수준, 단계; 평평한", ipa: "/ˈlev.əl/" },
+  "office": { pos: "n.", kr: "사무실, 직무, 관청", ipa: "/ˈɒf.ɪs/" },
+  "door": { pos: "n.", kr: "문, 출입구", ipa: "/dɔːr/" },
+  "health": { pos: "n.", kr: "건강, 보건", ipa: "/helθ/" },
+  "person": { pos: "n.", kr: "사람, 인간, 인물", ipa: "/ˈpɜː.sən/" },
+  "art": { pos: "n.", kr: "예술, 미술, 기술", ipa: "/ɑːt/" },
+  "war": { pos: "n.", kr: "전쟁, 투쟁", ipa: "/wɔːr/" },
+  "history": { pos: "n.", kr: "역사, 내력, 연혁", ipa: "/ˈhɪs.tər.i/" },
+  "party": { pos: "n.", kr: "정당, 모임, 당사자", ipa: "/ˈpɑː.ti/" },
+  "result": { pos: "n./v.", kr: "결과, 결실; 발생하다", ipa: "/rɪˈzʌlt/" },
+  "change": { pos: "n./v.", kr: "변화, 잔돈; 바꾸다", ipa: "/tʃeɪndʒ/" },
+  "morning": { pos: "n.", kr: "아침, 오전", ipa: "/ˈmɔː.nɪŋ/" },
+  "reason": { pos: "n.", kr: "이유, 까닭, 이성", ipa: "/ˈriː.zən/" },
+  "research": { pos: "n./v.", kr: "연구, 조사; 탐구하다", ipa: "/rɪˈsɜːtʃ/" },
+  "girl": { pos: "n.", kr: "소녀, 여자아이", ipa: "/ɡɜːl/" },
+  "guy": { pos: "n.", kr: "녀석, 사람, 남자", ipa: "/ɡaɪ/" },
+  "moment": { pos: "n.", kr: "순간, 잠깐, 시기", ipa: "/ˈməʊ.mənt/" },
+  "air": { pos: "n.", kr: "공기, 대기, 방송", ipa: "/eər/" },
+  "teacher": { pos: "n.", kr: "선생님, 교사", ipa: "/ˈtiː.tʃər/" },
+  "force": { pos: "n./v.", kr: "힘, 무력; 강요하다", ipa: "/fɔːs/" },
+  "education": { pos: "n.", kr: "교육, 훈육", ipa: "/ˌedʒ.uˈkeɪ.ʃən/" }
+};
+
+/**
+ * Fetch online Korean translation from MyMemory Open API as fallback
+ */
+async function fetchOnlineKorean(word) {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2500);
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=en|ko`;
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeout);
+    if (res.ok) {
+      const data = await res.json();
+      const translation = data?.responseData?.translatedText;
+      if (translation && translation.trim() && translation.toLowerCase() !== word.toLowerCase()) {
+        return translation.trim();
+      }
+    }
+  } catch (e) {
+    // network or timeout fallback
+  }
+  return null;
+}
+
+/**
+ * Primary word lookup: Guarantee Korean meaning and IPA
+ */
+async function lookupWord(rawWord) {
+  const clean = cleanWord(rawWord);
+  if (!clean) return null;
+
+  if (memoryCache.has(clean)) {
+    return memoryCache.get(clean);
+  }
+
+  // 1. Check Extended TEPS Vocab (highest quality: roots, forms, synonyms)
+  if (extendedTepsVocab[clean]) {
+    const item = extendedTepsVocab[clean];
+    const details = getWordDetails(clean, item);
+    const entry = {
+      word: clean,
+      ipa: item.ipa,
+      pos: item.pos,
+      kr: item.kr,
+      isTeps: true,
+      details
+    };
+    memoryCache.set(clean, entry);
+    return entry;
+  }
+
+  // 2. Check Standard TEPS Dictionary
+  if (tepsDictionary[clean]) {
+    const item = tepsDictionary[clean];
+    const details = getWordDetails(clean, item);
+    const entry = {
+      word: clean,
+      ipa: item.ipa,
+      pos: item.pos,
+      kr: item.kr,
+      isTeps: true,
+      details
+    };
+    memoryCache.set(clean, entry);
+    return entry;
+  }
+
+  // 3. Check Lemmatized form in TEPS dictionaries
+  const lemma = lemmatize(clean);
+  if (lemma && (extendedTepsVocab[lemma] || tepsDictionary[lemma])) {
+    const item = extendedTepsVocab[lemma] || tepsDictionary[lemma];
+    const details = getWordDetails(lemma, item);
+    const entry = {
+      word: clean,
+      baseForm: lemma,
+      ipa: item.ipa,
+      pos: item.pos,
+      kr: item.kr,
+      isTeps: true,
+      details
+    };
+    memoryCache.set(clean, entry);
+    return entry;
+  }
+
+  // 4. Check Common Korean Dictionary
+  if (CORE_KOREAN_DICT[clean]) {
+    const item = CORE_KOREAN_DICT[clean];
+    const details = getWordDetails(clean, item);
+    const entry = {
+      word: clean,
+      ...item,
+      isTeps: false,
+      details
+    };
+    memoryCache.set(clean, entry);
+    return entry;
+  }
+  if (lemma && CORE_KOREAN_DICT[lemma]) {
+    const item = CORE_KOREAN_DICT[lemma];
+    const details = getWordDetails(clean, item);
+    const entry = {
+      word: clean,
+      baseForm: lemma,
+      ...item,
+      isTeps: false,
+      details
+    };
+    memoryCache.set(clean, entry);
+    return entry;
+  }
+
+  // 5. Online lookup: Free Dictionary API for IPA + MyMemory for Korean Translation
+  let fetchedIpa = `/${clean}/`;
+  let fetchedPos = '단어';
+  let fetchedAudio = null;
+  let fetchedKr = null;
+
+  try {
+    const [dictPromise, trPromise] = await Promise.allSettled([
+      fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(clean)}`),
+      fetchOnlineKorean(clean)
+    ]);
+
+    if (dictPromise.status === 'fulfilled' && dictPromise.value.ok) {
+      const data = await dictPromise.value.json();
+      if (Array.isArray(data) && data[0]) {
+        const first = data[0];
+        fetchedIpa = first.phonetic || first.phonetics?.find(p => p.text)?.text || fetchedIpa;
+        fetchedAudio = first.phonetics?.find(p => p.audio)?.audio || null;
+        if (first.meanings?.[0]?.partOfSpeech) {
+          fetchedPos = `${first.meanings[0].partOfSpeech}.`;
+        }
+      }
+    }
+
+    if (trPromise.status === 'fulfilled' && trPromise.value) {
+      fetchedKr = trPromise.value;
+    }
+  } catch (e) {
+    // graceful fallback
+  }
+
+  // Final Korean definition fallback
+  if (!fetchedKr) {
+    // Try lemmatized translation
+    if (lemma && lemma !== clean) {
+      fetchedKr = await fetchOnlineKorean(lemma);
+    }
+  }
+
+  const finalKr = fetchedKr || "문맥상 단어 (클릭하여 단어장에 추가)";
+
+  const entry = {
+    word: clean,
+    ipa: fetchedIpa,
+    pos: fetchedPos,
+    kr: finalKr,
+    audio: fetchedAudio,
+    isTeps: false,
+    details: getWordDetails(clean, { ipa: fetchedIpa, pos: fetchedPos, kr: finalKr })
+  };
+
+  memoryCache.set(clean, entry);
+  return entry;
+}
+
+function playAudio(word, audioUrl = null) {
+  if (audioUrl) {
+    const audio = new Audio(audioUrl);
+    audio.play().catch(() => playSpeechSynthesis(word));
+  } else {
+    playSpeechSynthesis(word);
+  }
+}
+
+function playSpeechSynthesis(text) {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US';
+  utterance.rate = 0.95;
+  window.speechSynthesis.speak(utterance);
+}
+
+
+  /* --- 7. Sentence Generator --- */
+  
+
+
+
+// Fallback dynamic context generators if direct templates are exhausted
+const DYNAMIC_FRAMES = [
+  {
+    prefix: "A thorough review of contemporaneous literature suggests that investigators must {WORD} underlying premises before drawing categorical conclusions.",
+    suffix: "Without such empirical validation, theoretical frameworks risk systemic misinterpretation.",
+    kr: "당대 문헌에 대한 철저한 검토는 연구자들이 단정적인 결론을 내리기 전에 근저의 전제를 {WORD_KR}해야 함을 시사합니다. 그러한 실증적 검증이 없다면 이론적 틀은 구조적 오독의 위험에 처합니다."
+  },
+  {
+    prefix: "Contrary to conventional wisdom, the committee resolved to {WORD} established guidelines in light of emergent evidentiary findings.",
+    suffix: "This procedural recalibration elicited varied reactions across academic circles.",
+    kr: "통념과 달리, 위원회는 새롭게 떠오른 증거적 발견에 비추어 기존 지침을 {WORD_KR}하기로 결정했습니다. 이러한 절차적 재조정은 학계 전반에 걸쳐 다양한 반응을 불러일으켰습니다."
+  },
+  {
+    prefix: "Archival records elucidate how prominent reformists managed to {WORD} institutional inertia during periods of acute socio-political transition.",
+    suffix: "Their concerted efforts ultimately yielded profound structural transformations.",
+    kr: "기록 보관 자료는 저명한 개혁가들이 극심한 사회정치적 전환기에 어떻게 제도적 타성을 {WORD_KR}해 냈는지를 명확히 보여줍니다. 그들의 일치단결된 노력은 궁극적으로 심대한 구조적 변혁을 낳았습니다."
+  },
+  {
+    prefix: "Quantitative modeling demonstrates that macroeconomic shifts can drastically {WORD} domestic consumption trajectories over extended quarters.",
+    suffix: "Fiscal authorities are therefore urged to maintain heightened surveillance.",
+    kr: "정량적 모델링은 거시경제적 변화가 장기간에 걸쳐 국내 소비 궤적을 급격히 {WORD_KR}할 수 있음을 입증합니다. 따라서 재정 당국은 감시 태세를 격상할 것을 권고받고 있습니다."
+  },
+  {
+    prefix: "Subsequent clinical evaluations revealed that patients were able to {WORD} their cognitive faculties following the targeted therapeutic intervention.",
+    suffix: "These empirical outcomes furnish persuasive justification for further trials.",
+    kr: "후속 임상 평가 결과, 표적 치료 개입 이후 환자들이 자신들의 인지 기능을 {WORD_KR}할 수 있었음이 밝혀졌습니다. 이러한 실증적 결과는 추가 시험을 위한 설득력 있는 정당성을 제공합니다."
+  },
+  {
+    prefix: "While preliminary forecasts appeared pessimistic, innovative manufacturing practices helped {WORD} structural deficits within the sector.",
+    suffix: "Industry leaders have widely commended this unexpected resilience.",
+    kr: "초기 전망은 비관적인 것으로 보였으나, 혁신적인 제조 관행은 해당 부문 내의 구조적 결손을 {WORD_KR}하는 데 기여했습니다. 업계 리더들은 이러한 뜻밖의 회복력을 널리 칭찬했습니다."
+  },
+  {
+    prefix: "Faced with unprecedented ecological disruptions, conservationists advocated for policies that would {WORD} fragile alpine habitats.",
+    suffix: "Immediate legislative action is mandated to avert irreparable biodiversity loss.",
+    kr: "전례 없는 생태학적 혼란에 직면하여, 환경보호론자들은 취약한 고산지대 서식지를 {WORD_KR}할 정책을 강력히 옹호했습니다. 돌이킬 수 없는 생물 다양성 손실을 막기 위해 즉각적인 입법 조치가 요구됩니다."
+  },
+  {
+    prefix: "The Supreme Court's majority verdict served to {WORD} statutory ambiguities that had previously vexed lower judicial tribunals.",
+    suffix: "Scholars concur that this milestone decision reinforces procedural predictability.",
+    kr: "대법원의 다수의견 평결은 과거 하급 법원들을 곤혹스럽게 했던 법률상의 모호성을 {WORD_KR}하는 역할을 했습니다. 학자들은 이 중대한 판결이 절차적 예측 가능성을 강화한다는 점에 동의합니다."
+  }
+];
+
+function cleanKoreanStem(kr) {
+  if (!kr) return '';
+  let first = kr.split(/[,;/]/)[0].trim();
+  if (first.endsWith('하다') && first.length > 2) {
+    first = first.slice(0, -2);
+  } else if (first.endsWith('다') && first.length > 1) {
+    first = first.slice(0, -1);
+  }
+  return first;
+}
+
+// Helper to sanitize word insertion
+function fillTemplate(template, targetWord, wordKr) {
+  const krMeaning = wordKr || targetWord;
+  // Natural Korean stem for smooth grammar
+  const cleanKr = cleanKoreanStem(krMeaning);
+
+  const enText = template.en
+    .replace(/\{WORD\}/g, targetWord)
+    .replace(/\{WORD_CAP\}/g, targetWord.charAt(0).toUpperCase() + targetWord.slice(1));
+
+  const krText = template.kr
+    .replace(/\{WORD_KR\}/g, cleanKr)
+    .replace(/\{WORD\}/g, targetWord);
+
+  return { enText, krText };
+}
+
+// Ensure sentence count does not exceed 2
+function enforceMaxTwoSentences(text) {
+  // Split on sentence boundaries: period, question mark, exclamation mark followed by space or end
+  const sentences = text.match(/[^.!?]+[.!?]+(\s|$)/g);
+  if (sentences && sentences.length > 2) {
+    return sentences.slice(0, 2).join('').trim();
+  }
+  return text.trim();
+}
+
+/**
+ * Generate 5 distinct TEPS sentences for the given word and level
+ */
+async function generateTepsSentences(word, targetLevel = 327, userApiKey = null, apiProvider = 'gemini') {
+  const clean = cleanWord(word);
+  if (!clean) return [];
+
+  // If user configured an API key, we can try LLM generation with fallback
+  if (userApiKey && userApiKey.trim().length > 10) {
+    try {
+      const llmResult = await generateViaLLM(clean, targetLevel, userApiKey, apiProvider);
+      if (llmResult && llmResult.length === 5) {
+        return llmResult;
+      }
+    } catch (err) {
+      console.warn("LLM generation failed, falling back to built-in TEPS engine:", err);
+    }
+  }
+
+  // Built-in TEPS Generation Engine
+  const wordInfo = tepsDictionary[clean] || tepsDictionary[lemmatize(clean)] || { kr: clean };
+  const wordKr = wordInfo.kr || clean;
+
+  const results = [];
+  const usedTemplates = new Set();
+
+  // Select 5 domains
+  for (let i = 0; i < TEPS_DOMAINS.length; i++) {
+    const domain = TEPS_DOMAINS[i];
+    const domainKey = domain.id;
+    const domainTemplates = TEMPLATES[domainKey] || {};
+
+    // Find templates close to target level
+    let candidatePool = [];
+    if (domainTemplates[targetLevel] && domainTemplates[targetLevel].length > 0) {
+      candidatePool.push(...domainTemplates[targetLevel]);
+    }
+    // Also include adjacent levels for variety
+    const levelKeys = Object.keys(domainTemplates).map(Number).sort((a, b) => Math.abs(a - targetLevel) - Math.abs(b - targetLevel));
+    for (const lk of levelKeys) {
+      if (domainTemplates[lk]) {
+        candidatePool.push(...domainTemplates[lk]);
+      }
+    }
+
+    // Filter out already used
+    const available = candidatePool.filter(t => !usedTemplates.has(t.en));
+    let chosen = null;
+
+    if (available.length > 0) {
+      const randIdx = Math.floor(Math.random() * available.length);
+      chosen = available[randIdx];
+      usedTemplates.add(chosen.en);
+    } else {
+      // Dynamic fallback
+      const dynamicFrame = DYNAMIC_FRAMES[(i + Math.floor(Math.random() * DYNAMIC_FRAMES.length)) % DYNAMIC_FRAMES.length];
+      chosen = {
+        en: `${dynamicFrame.prefix} ${dynamicFrame.suffix}`,
+        kr: dynamicFrame.kr
+      };
+    }
+
+    const { enText, krText } = fillTemplate(chosen, clean, wordKr);
+
+    results.push({
+      id: `${clean}-${domain.id}-${Date.now()}-${i}`,
+      domainId: domain.id,
+      domainName: domain.name,
+      domainEn: domain.enName,
+      domainColor: domain.color,
+      domainIcon: domain.icon,
+      level: targetLevel,
+      levelBadge: TEPS_LEVELS[targetLevel]?.badge || `TEPS ${targetLevel}`,
+      targetWord: clean,
+      en: enforceMaxTwoSentences(enText),
+      kr: krText,
+      revealed: false // Translation is hidden initially
+    });
+  }
+
+  return results;
+}
+
+/**
+ * Optional LLM generation using official Google Gemini API (v1beta)
+ */
+async function generateViaLLM(word, level, apiKey, provider) {
+  const levelInfo = TEPS_LEVELS[level] || TEPS_LEVELS[327];
+  const prompt = `You are an expert TEPS (Test of English Proficiency developed by Seoul National University) examination committee member.
+Generate exactly 5 distinct, high-quality English sentences that feature the target vocabulary word: "${word}".
+
+Strict Requirements:
+1. TARGET TEPS LEVEL: ${level} score band (${levelInfo.desc}).
+2. LENGTH LIMIT: Each example MUST BE 1 to 2 sentences maximum (strictly ≤ 2 sentences).
+3. REGISTER & STYLE: Authentic academic TEPS style (concise, formal, intellectual, rich vocabulary, logical cohesion).
+4. DOMAIN DIVERSITY: Exactly one sentence for each of the 5 domains in order:
+   - Domain 1: Humanities & Philosophy (인문·철학·역사)
+   - Domain 2: Social Sciences & Economics (사회·경제·경영)
+   - Domain 3: Natural Sciences & Medicine (자연과학·의학·생태)
+   - Domain 4: Technology & AI (기술·공학·인공지능)
+   - Domain 5: Current Affairs & Law (시사·법률·문화)
+5. EXACT JSON OUTPUT: Return ONLY a valid JSON array of 5 objects, with NO markdown formatting, no code blocks, no backticks.
+Format:
+[
+  {
+    "domainId": "humanities",
+    "en": "...",
+    "kr": "..."
+  },
+  ...
+]`;
+
+  if (provider === 'gemini') {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          response_mime_type: "application/json",
+          temperature: 0.7
+        }
+      })
+    });
+    const data = await response.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (text) {
+      const parsed = JSON.parse(text);
+      if (Array.isArray(parsed) && parsed.length === 5) {
+        return parsed.map((item, idx) => {
+          const dom = TEPS_DOMAINS[idx] || TEPS_DOMAINS[0];
+          return {
+            id: `${word}-${dom.id}-${Date.now()}-${idx}`,
+            domainId: dom.id,
+            domainName: dom.name,
+            domainEn: dom.enName,
+            domainColor: dom.color,
+            domainIcon: dom.icon,
+            level: level,
+            levelBadge: TEPS_LEVELS[level]?.badge || `TEPS ${level}`,
+            targetWord: word,
+            en: enforceMaxTwoSentences(item.en),
+            kr: item.kr,
+            revealed: false
+          };
+        });
+      }
+    }
+  }
+  return null;
+}
+
+
+  /* --- 8. Main Application Controller --- */
+  // Main Application Controller for TEPS Vocab Master
+
+
+
+
+
+
+
+// Application State
+const state = {
+  theme: 'light',
+  tepsLevel: 327,
+  currentWord: null,
+  currentWordMeta: null,
+  currentSentences: [],
+  notebookOpen: false,
+  apiKey: '',
+  apiProvider: 'gemini',
+  popoverTargetWord: null
+};
+
+// Storage & Auth instances
+const vocabStorage = new VocabStorage();
+const authManager = new AuthManager();
+
+// DOM Elements
+const brandResetBtn = document.getElementById('brandResetBtn');
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const themeIconSun = document.getElementById('themeIconSun');
+const themeIconMoon = document.getElementById('themeIconMoon');
+const userSyncBtn = document.getElementById('userSyncBtn');
+const userSyncText = document.getElementById('userSyncText');
+const openSettingsBtn = document.getElementById('openSettingsBtn');
+const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+const settingsModal = document.getElementById('settingsModal');
+const apiKeyInput = document.getElementById('apiKeyInput');
+const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+const clearAllVocabBtn = document.getElementById('clearAllVocabBtn');
+
+// Auth Modal Elements (Requirement 4)
+const authModal = document.getElementById('authModal');
+const closeAuthModalBtn = document.getElementById('closeAuthModalBtn');
+const tabLogin = document.getElementById('tabLogin');
+const tabRegister = document.getElementById('tabRegister');
+const authUsernameInput = document.getElementById('authUsernameInput');
+const authPasswordInput = document.getElementById('authPasswordInput');
+const authSubmitBtn = document.getElementById('authSubmitBtn');
+const authNoticeText = document.getElementById('authNoticeText');
+let authMode = 'login'; // 'login' or 'register'
+
+const currentLevelBadge = document.getElementById('currentLevelBadge');
+const levelDescription = document.getElementById('levelDescription');
+const prevLevelBtn = document.getElementById('prevLevelBtn');
+const nextLevelBtn = document.getElementById('nextLevelBtn');
+const levelChips = document.querySelectorAll('.level-chip');
+
+const heroSection = document.getElementById('heroSection');
+const searchForm = document.getElementById('searchForm');
+const wordInput = document.getElementById('wordInput');
+const clearInputBtn = document.getElementById('clearInputBtn');
+const suggestChips = document.querySelectorAll('.suggest-chip');
+
+const activeWordSection = document.getElementById('activeWordSection');
+const currentWordHeading = document.getElementById('currentWordHeading');
+const currentWordIpa = document.getElementById('currentWordIpa');
+const currentWordPos = document.getElementById('currentWordPos');
+const currentWordKr = document.getElementById('currentWordKr');
+const currentWordRoot = document.getElementById('currentWordRoot');
+const currentWordForms = document.getElementById('currentWordForms');
+const currentWordSynonyms = document.getElementById('currentWordSynonyms');
+const currentWordAntonyms = document.getElementById('currentWordAntonyms');
+const playAudioBtn = document.getElementById('playAudioBtn');
+const addToNotebookBtn = document.getElementById('addToNotebookBtn');
+const regenerateBtn = document.getElementById('regenerateBtn');
+
+const sentencesSection = document.getElementById('sentencesSection');
+const sentencesList = document.getElementById('sentencesList');
+const revealAllKrBtn = document.getElementById('revealAllKrBtn');
+
+const wordPopover = document.getElementById('wordPopover');
+const popoverWordText = document.getElementById('popoverWordText');
+const popoverIpaText = document.getElementById('popoverIpaText');
+const popoverKrBadge = document.getElementById('popoverKrBadge');
+const popoverFormsRow = document.getElementById('popoverFormsRow');
+const popoverAudioBtn = document.getElementById('popoverAudioBtn');
+const popoverAddBtn = document.getElementById('popoverAddBtn');
+
+const notebookTabHandle = document.getElementById('notebookTabHandle');
+const notebookSheet = document.getElementById('notebookSheet');
+const notebookCountBadge = document.getElementById('notebookCountBadge');
+const notebookList = document.getElementById('notebookList');
+const notebookChevron = document.getElementById('notebookChevron');
+
+const toastContainer = document.getElementById('toastContainer');
+
+// ==========================================================================
+// Initialization & Theme Setup (Requirement 1 & 4)
+// ==========================================================================
+function init() {
+  const savedSettings = SettingsStorage.load();
+  state.theme = savedSettings.theme || 'light';
+  state.tepsLevel = savedSettings.tepsLevel || 327;
+  state.apiKey = savedSettings.apiKey || '';
+  state.apiProvider = savedSettings.apiProvider || 'gemini';
+
+  applyTheme(state.theme);
+  updateLevelUI(state.tepsLevel);
+
+  // Auth subscription
+  authManager.subscribe(updateUserSyncUI);
+  updateUserSyncUI(authManager.currentUser);
+
+  // If user is already logged in, check if their cloud list should be synced
+  if (authManager.isLoggedIn() && authManager.currentUser.vocabList?.length > 0) {
+    vocabStorage.items = authManager.currentUser.vocabList;
+  }
+
+  // Vocab Storage subscription
+  vocabStorage.subscribe((items) => {
+    renderNotebook(items);
+    // Automatic cloud sync on any vocab change (Requirement 4)
+    if (authManager.isLoggedIn()) {
+      authManager.sync(vocabStorage.items, { tepsLevel: state.tepsLevel });
+    }
+  });
+
+  renderNotebook(vocabStorage.getSortedItems());
+  bindEvents();
+}
+
+function applyTheme(theme) {
+  state.theme = theme;
+  document.documentElement.setAttribute('data-theme', theme);
+  if (theme === 'dark') {
+    themeIconSun.style.display = 'none';
+    themeIconMoon.style.display = 'block';
+  } else {
+    themeIconSun.style.display = 'block';
+    themeIconMoon.style.display = 'none';
+  }
+  saveCurrentSettings();
+}
+
+function toggleTheme() {
+  applyTheme(state.theme === 'light' ? 'dark' : 'light');
+}
+
+function saveCurrentSettings() {
+  SettingsStorage.save({
+    theme: state.theme,
+    tepsLevel: state.tepsLevel,
+    apiKey: state.apiKey,
+    apiProvider: state.apiProvider
+  });
+}
+
+function updateUserSyncUI(user) {
+  if (user && user.username) {
+    userSyncBtn.classList.add('logged-in');
+    userSyncText.textContent = `${user.username}님`;
+    userSyncBtn.title = '클릭하여 계정 정보 확인 또는 로그아웃';
+  } else {
+    userSyncBtn.classList.remove('logged-in');
+    userSyncText.textContent = '로그인 / 동기화';
+    userSyncBtn.title = '아이디/비밀번호로 기기 간 단어장 동기화';
+  }
+}
+
+// ==========================================================================
+// Level Toolbar Handlers (Requirements 5 & 6)
+// ==========================================================================
+const LEVEL_STEPS = [250, 327, 387, 450, 500];
+
+function setLevel(newLevel) {
+  if (!LEVEL_STEPS.includes(newLevel)) return;
+  state.tepsLevel = newLevel;
+  updateLevelUI(newLevel);
+  saveCurrentSettings();
+
+  if (state.currentWord) {
+    showToast(`목표 난이도를 TEPS ${newLevel}점으로 변경했습니다. 예문을 다시 구성합니다.`);
+    executeSearch(state.currentWord, false);
+  }
+}
+
+function updateLevelUI(level) {
+  const info = TEPS_LEVELS[level] || TEPS_LEVELS[327];
+  currentLevelBadge.textContent = info.badge;
+  levelDescription.textContent = info.desc;
+
+  const currentIdx = LEVEL_STEPS.indexOf(level);
+  prevLevelBtn.disabled = currentIdx <= 0;
+  nextLevelBtn.disabled = currentIdx >= LEVEL_STEPS.length - 1;
+
+  levelChips.forEach(chip => {
+    const chipLevel = parseInt(chip.getAttribute('data-level'), 10);
+    if (chipLevel === level) {
+      chip.classList.add('active');
+    } else {
+      chip.classList.remove('active');
+    }
+  });
+}
+
+function stepLevel(direction) {
+  const currentIdx = LEVEL_STEPS.indexOf(state.tepsLevel);
+  const nextIdx = currentIdx + direction;
+  if (nextIdx >= 0 && nextIdx < LEVEL_STEPS.length) {
+    setLevel(LEVEL_STEPS[nextIdx]);
+  }
+}
+
+// ==========================================================================
+// Search & Sentence Generation (Requirements 2, 3, 4, 6, 9)
+// ==========================================================================
+async function executeSearch(rawWord, shouldAddHistory = true) {
+  const word = cleanWord(rawWord);
+  if (!word) return;
+
+  hideWordPopover();
+  wordInput.value = word;
+  clearInputBtn.classList.add('visible');
+
+  // Lookup word metadata (Korean meaning guaranteed)
+  const meta = await lookupWord(word);
+  state.currentWord = meta.word;
+  state.currentWordMeta = meta;
+
+  // 1. Update Active Word Bar (Requirements 2 & 3: Korean Meaning & Details)
+  currentWordHeading.textContent = meta.word;
+  currentWordIpa.textContent = meta.ipa || `/${meta.word}/`;
+  currentWordPos.textContent = meta.pos || '단어';
+  currentWordKr.textContent = meta.kr || '뜻 조회 중';
+
+  // Details: Root, Forms, Synonyms, Antonyms (Requirement 3)
+  const details = meta.details || {};
+  currentWordRoot.textContent = details.root || `형태학적 분석: '${meta.word}'`;
+  
+  const formsText = details.forms ? 
+    Object.entries(details.forms).map(([k, v]) => `[${k}] ${v}`).join('  |  ') : 
+    `${meta.word}s, ${meta.word}ed, ${meta.word}ing`;
+  currentWordForms.textContent = formsText;
+
+  // Synonyms
+  currentWordSynonyms.innerHTML = '';
+  const synonyms = details.synonyms || [];
+  if (synonyms.length > 0) {
+    synonyms.forEach(syn => {
+      const chip = document.createElement('span');
+      chip.className = 'chip-tag synonym';
+      chip.textContent = syn;
+      chip.style.cursor = 'pointer';
+      chip.title = '클릭하여 이 유의어로 예문 검색';
+      chip.onclick = () => executeSearch(syn, true);
+      currentWordSynonyms.appendChild(chip);
+    });
+  } else {
+    currentWordSynonyms.textContent = '사전 등록 유의어 없음';
+  }
+
+  // Antonyms
+  currentWordAntonyms.innerHTML = '';
+  const antonyms = details.antonyms || [];
+  if (antonyms.length > 0) {
+    antonyms.forEach(ant => {
+      const chip = document.createElement('span');
+      chip.className = 'chip-tag antonym';
+      chip.textContent = ant;
+      chip.style.cursor = 'pointer';
+      chip.title = '클릭하여 이 반의어로 예문 검색';
+      chip.onclick = () => executeSearch(ant, true);
+      currentWordAntonyms.appendChild(chip);
+    });
+  } else {
+    currentWordAntonyms.textContent = '사전 등록 반의어 없음';
+  }
+
+  activeWordSection.style.display = 'block';
+
+  // Automatically save to notebook history (Requirement 7)
+  if (shouldAddHistory) {
+    vocabStorage.addWord(meta.word, {
+      ipa: meta.ipa,
+      pos: meta.pos,
+      kr: meta.kr,
+      details: meta.details
+    });
+  }
+
+  // Adjust Hero layout to compact mode
+  heroSection.classList.add('compact');
+
+  // Generate 5 distinct TEPS sentences
+  sentencesList.innerHTML = `
+    <div style="text-align: center; padding: 3rem 0; color: var(--text-secondary);">
+      <div style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem;">
+        ⚡ TEPS ${state.tepsLevel}점 기준 실전 예문 5개를 생성하고 있습니다...
+      </div>
+      <div style="font-size: 0.88rem; color: var(--text-tertiary);">
+        '${meta.word}' (${meta.kr}) 단어에 맞추어 5대 분야 텝스 구문을 구성 중입니다.
+      </div>
+    </div>
+  `;
+  sentencesSection.style.display = 'block';
+
+  try {
+    const sentences = await generateTepsSentences(
+      meta.word, 
+      state.tepsLevel, 
+      state.apiKey, 
+      state.apiProvider
+    );
+    state.currentSentences = sentences;
+    renderSentences(sentences, meta);
+  } catch (err) {
+    console.error('Error generating sentences:', err);
+    sentencesList.innerHTML = `
+      <div style="text-align: center; padding: 2rem; color: var(--danger);">
+        예문 생성 중 오류가 발생했습니다. 다시 시도해 주세요.
+      </div>
+    `;
+  }
+}
+
+// ==========================================================================
+// Sentence Rendering & Interactive Words (Requirements 1, 2, 3, 9, 10)
+// ==========================================================================
+function renderSentences(sentences, wordMeta) {
+  if (!sentences || sentences.length === 0) {
+    sentencesList.innerHTML = `<div style="text-align: center; padding: 2rem;">생성된 예문이 없습니다.</div>`;
+    return;
+  }
+
+  sentencesList.innerHTML = '';
+
+  sentences.forEach((s, index) => {
+    const card = document.createElement('div');
+    card.className = 'sentence-card';
+    card.style.animationDelay = `${index * 60}ms`;
+
+    // Header with domain badge AND prominent target word + Korean reminder (Requirement 2)
+    const topMeta = document.createElement('div');
+    topMeta.className = 'card-top-meta';
+    topMeta.innerHTML = `
+      <div class="top-meta-left">
+        <span class="domain-pill" style="background: ${s.domainColor}15; color: ${s.domainColor}; border: 1px solid ${s.domainColor}30;">
+          <span>${s.domainName}</span>
+          <span style="opacity: 0.7; font-weight: 500;">· ${s.domainEn}</span>
+        </span>
+        <span class="card-target-reminder" title="이 예문의 핵심 어휘">
+          🎯 <b>${wordMeta.word}</b> : ${wordMeta.kr}
+        </span>
+      </div>
+      <div class="card-actions-quick">
+        <button class="action-icon-btn speak-sentence-btn" title="전체 문장 듣기" data-index="${index}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        </button>
+        <button class="action-icon-btn copy-sentence-btn" title="문장 복사" data-index="${index}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        </button>
+      </div>
+    `;
+
+    // English Sentence with Interactive Words Tokenization
+    const enBox = document.createElement('div');
+    enBox.className = 'sentence-en-box';
+    enBox.innerHTML = tokenizeSentenceHtml(s.en, wordMeta.word);
+
+    // Korean Translation Box (Click to reveal requirement 3)
+    const krBox = document.createElement('div');
+    krBox.className = 'sentence-kr-box';
+    krBox.setAttribute('data-revealed', 'false');
+    krBox.innerHTML = `
+      <div class="kr-toggle-hint">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        <span>클릭하여 한글 번역 보기</span>
+      </div>
+      <div class="sentence-kr-text" style="display: none;">${s.kr}</div>
+    `;
+
+    krBox.addEventListener('click', () => {
+      const isRevealed = krBox.getAttribute('data-revealed') === 'true';
+      const hint = krBox.querySelector('.kr-toggle-hint');
+      const text = krBox.querySelector('.sentence-kr-text');
+
+      if (isRevealed) {
+        krBox.setAttribute('data-revealed', 'false');
+        hint.style.display = 'flex';
+        text.style.display = 'none';
+      } else {
+        krBox.setAttribute('data-revealed', 'true');
+        hint.style.display = 'none';
+        text.style.display = 'block';
+      }
+    });
+
+    card.appendChild(topMeta);
+    card.appendChild(enBox);
+    card.appendChild(krBox);
+    sentencesList.appendChild(card);
+  });
+
+  attachSentenceEvents();
+}
+
+function tokenizeSentenceHtml(text, targetWord) {
+  const cleanTarget = targetWord.toLowerCase().trim();
+  const tokens = text.split(/([a-zA-Z0-9'-]+)/);
+
+  return tokens.map(token => {
+    if (!token || !/[a-zA-Z0-9]/.test(token)) {
+      return token;
+    }
+
+    const cleanToken = cleanWord(token);
+    const isTarget = cleanToken === cleanTarget || 
+                     cleanToken.startsWith(cleanTarget) || 
+                     cleanTarget.startsWith(cleanToken);
+
+    if (isTarget) {
+      return `<span class="token-word target-highlight" data-word="${token}">${token}</span>`;
+    } else {
+      return `<span class="token-word" data-word="${token}">${token}</span>`;
+    }
+  }).join('');
+}
+
+function attachSentenceEvents() {
+  document.querySelectorAll('.token-word').forEach(el => {
+    el.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const rawWord = el.getAttribute('data-word');
+      await showWordPopover(rawWord, el);
+    });
+  });
+
+  document.querySelectorAll('.speak-sentence-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(btn.getAttribute('data-index'), 10);
+      const s = state.currentSentences[idx];
+      if (s) {
+        playSpeechSynthesis(s.en);
+        showToast('🔊 문장을 재생합니다.');
+      }
+    });
+  });
+
+  document.querySelectorAll('.copy-sentence-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(btn.getAttribute('data-index'), 10);
+      const s = state.currentSentences[idx];
+      if (s) {
+        copyToClipboard(`${s.en}\n(${s.kr})`);
+        showToast('📋 예문과 번역이 클립보드에 복사되었습니다.');
+      }
+    });
+  });
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(() => fallbackCopyText(text));
+  } else {
+    fallbackCopyText(text);
+  }
+}
+
+function fallbackCopyText(text) {
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.style.position = "fixed";
+  textArea.style.left = "-9999px";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    document.execCommand('copy');
+  } catch (err) {}
+  document.body.removeChild(textArea);
+}
+
+// ==========================================================================
+// Interactive Word Popover (Requirement 1: Prominent Korean Meaning)
+// ==========================================================================
+async function showWordPopover(rawWord, element) {
+  const clean = cleanWord(rawWord);
+  if (!clean) return;
+
+  state.popoverTargetWord = clean;
+  popoverWordText.textContent = clean;
+  popoverIpaText.textContent = '조회 중...';
+  popoverKrBadge.textContent = '한국어 뜻 조회 중...';
+  popoverFormsRow.textContent = '';
+
+  const rect = element.getBoundingClientRect();
+  const scrollY = window.scrollY;
+  const scrollX = window.scrollX;
+
+  wordPopover.style.display = 'flex';
+  
+  const popoverWidth = 300;
+  let top = rect.bottom + scrollY + 8;
+  let left = rect.left + scrollX;
+
+  if (left + popoverWidth > window.innerWidth - 20) {
+    left = window.innerWidth - popoverWidth - 20;
+  }
+  if (left < 10) left = 10;
+
+  wordPopover.style.top = `${top}px`;
+  wordPopover.style.left = `${left}px`;
+
+  // Fetch word info with guaranteed Korean translation
+  const info = await lookupWord(clean);
+  if (info && state.popoverTargetWord === clean) {
+    popoverIpaText.textContent = info.ipa || `/${clean}/`;
+    // Prominent Korean Meaning (Requirement 1)
+    popoverKrBadge.textContent = `${info.pos ? `[${info.pos}] ` : ''}${info.kr}`;
+    
+    // Quick forms & synonyms hint
+    const details = info.details || {};
+    let subHint = '';
+    if (details.synonyms && details.synonyms.length > 0) {
+      subHint += `유의어: ${details.synonyms.slice(0, 3).join(', ')}`;
+    }
+    if (details.root) {
+      subHint += (subHint ? ' | ' : '') + details.root;
+    }
+    popoverFormsRow.textContent = subHint;
+
+    popoverAddBtn.onclick = () => {
+      vocabStorage.addWord(clean, {
+        ipa: info.ipa,
+        pos: info.pos,
+        kr: info.kr,
+        details: info.details
+      });
+      showToast(`'${clean}' (${info.kr}) 단어가 단어장에 추가되었습니다.`);
+      hideWordPopover();
+    };
+
+    popoverAudioBtn.onclick = () => {
+      playAudio(clean, info.audio);
+    };
+  }
+}
+
+function hideWordPopover() {
+  wordPopover.style.display = 'none';
+  state.popoverTargetWord = null;
+}
+
+// ==========================================================================
+// Bottom Folded Notebook & Detailed Word View (Requirement 3 & 7 & 8)
+// ==========================================================================
+function toggleNotebook() {
+  state.notebookOpen = !state.notebookOpen;
+  if (state.notebookOpen) {
+    notebookSheet.classList.add('open');
+    notebookChevron.style.transform = 'rotate(180deg)';
+  } else {
+    notebookSheet.classList.remove('open');
+    notebookChevron.style.transform = 'rotate(0deg)';
+  }
+}
+
+function renderNotebook(items) {
+  notebookCountBadge.textContent = items.length;
+
+  if (items.length === 0) {
+    notebookList.innerHTML = `
+      <div class="notebook-empty-state">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        <p>단어장이 비어 있습니다. 단어를 검색하거나 예문에서 단어를 클릭해 추가하세요!</p>
+      </div>
+    `;
+    return;
+  }
+
+  notebookList.innerHTML = '';
+
+  items.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'vocab-item';
+    card.setAttribute('data-word', item.word);
+
+    let checkboxClass = 'unlearned';
+    let checkboxContent = '';
+    if (item.status === VOCAB_STATUS.LEARNING) {
+      checkboxClass = 'learning';
+    } else if (item.status === VOCAB_STATUS.MASTERED) {
+      checkboxClass = 'mastered';
+      checkboxContent = '✓';
+    }
+
+    const details = item.details || {};
+    const rootText = details.root || `어근: '${item.word}' 형태학적 구성`;
+    const formsText = details.forms ? 
+      Object.entries(details.forms).map(([k, v]) => `[${k}] ${v}`).join('  |  ') : 
+      `${item.word}s, ${item.word}ed, ${item.word}ing`;
+    const synonymsList = (details.synonyms || []).slice(0, 5);
+    const antonymsList = (details.antonyms || []).slice(0, 5);
+
+    card.innerHTML = `
+      <div class="vocab-item-top">
+        <div class="vocab-item-main">
+          <button class="checkbox-3state ${checkboxClass}" title="클릭하여 상태 변경 (미암기 → 암기 중 → 완료)" data-word="${item.word}">
+            ${checkboxContent}
+          </button>
+          <div class="vocab-word-info">
+            <span class="vocab-word-text">${item.word}</span>
+            <span class="vocab-word-ipa">${item.ipa || ''}</span>
+            <span class="vocab-word-kr-badge">${item.kr || '뜻 조회 중'}</span>
+          </div>
+        </div>
+        <div class="vocab-item-actions">
+          <button class="btn-detail-toggle" title="어근, 형태, 유의어/반의어 한 번에 보기">
+            <span>상세정보</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <button class="btn-generate-direct" title="새로운 예문 생성">예문 ➔</button>
+        </div>
+      </div>
+
+      <!-- Accordion Detailed Meta (Requirement 3: Root, Forms, Synonyms, Antonyms) -->
+      <div class="vocab-item-detail">
+        <div class="meta-row">
+          <span class="meta-label">🌱 어근 / 어원</span>
+          <span class="meta-content" style="font-weight: 600; color: var(--primary);">${rootText}</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">🔄 파생 형태</span>
+          <span class="meta-content" style="font-size: 0.82rem; color: var(--text-secondary);">${formsText}</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">✨ 유의어 (Syn)</span>
+          <div class="chips-list">
+            ${synonymsList.length > 0 ? synonymsList.map(s => `<span class="chip-tag synonym">${s}</span>`).join('') : '<span style="font-size: 0.8rem; color: var(--text-tertiary);">-</span>'}
+          </div>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">⚡ 반의어 (Ant)</span>
+          <div class="chips-list">
+            ${antonymsList.length > 0 ? antonymsList.map(a => `<span class="chip-tag antonym">${a}</span>`).join('') : '<span style="font-size: 0.8rem; color: var(--text-tertiary);">-</span>'}
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Click item main to immediately search and generate sentences (Requirement 7)
+    card.querySelector('.vocab-item-main').addEventListener('click', (e) => {
+      if (e.target.closest('.checkbox-3state')) return;
+      executeSearch(item.word, false);
+      if (window.innerWidth < 640) toggleNotebook();
+    });
+
+    card.querySelector('.btn-generate-direct').addEventListener('click', (e) => {
+      e.stopPropagation();
+      executeSearch(item.word, false);
+      if (window.innerWidth < 640) toggleNotebook();
+    });
+
+    // Accordion toggle button (Requirement 3)
+    const detailBtn = card.querySelector('.btn-detail-toggle');
+    const detailBox = card.querySelector('.vocab-item-detail');
+    detailBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = detailBox.classList.contains('open');
+      if (isOpen) {
+        detailBox.classList.remove('open');
+        detailBtn.querySelector('svg').style.transform = 'rotate(0deg)';
+      } else {
+        detailBox.classList.add('open');
+        detailBtn.querySelector('svg').style.transform = 'rotate(180deg)';
+      }
+    });
+
+    // 3-State Checkbox click handler (Requirement 8)
+    const checkboxBtn = card.querySelector('.checkbox-3state');
+    checkboxBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      handleCheckboxCycle(item.word, card);
+    });
+
+    notebookList.appendChild(card);
+  });
+}
+
+function handleCheckboxCycle(word, cardElement) {
+  const currentItem = vocabStorage.items.find(i => i.word.toLowerCase() === word.toLowerCase());
+  if (!currentItem) return;
+
+  if (currentItem.status === VOCAB_STATUS.UNLEARNED) {
+    vocabStorage.cycleStatus(word);
+    showToast(`'${word}' 단어를 [암기 중] 단계로 변경했습니다.`);
+  } else if (currentItem.status === VOCAB_STATUS.LEARNING) {
+    const checkbox = cardElement.querySelector('.checkbox-3state');
+    checkbox.className = 'checkbox-3state mastered';
+    checkbox.textContent = '✓';
+    
+    showToast(`🎉 축하합니다! '${word}' 단어를 완벽히 암기하여 단어장에서 삭제합니다.`);
+
+    cardElement.classList.add('removing');
+    setTimeout(() => {
+      vocabStorage.cycleStatus(word);
+    }, 350);
+  } else {
+    vocabStorage.cycleStatus(word);
+  }
+}
+
+// ==========================================================================
+// Account & Sync Modal Handlers (Requirement 4)
+// ==========================================================================
+function openAccountModal() {
+  if (authManager.isLoggedIn()) {
+    // Already logged in: confirm logout or status
+    const user = authManager.currentUser;
+    const ok = confirm(`현재 '${user.username}' 계정으로 로그인되어 있습니다.\n\n저장된 단어 수: ${vocabStorage.items.length}개\n\n로그아웃 하시겠습니까?`);
+    if (ok) {
+      authManager.logout();
+      showToast('로그아웃되었습니다.');
+    }
+    return;
+  }
+
+  // Not logged in: open login/register modal
+  authModal.classList.add('open');
+  authUsernameInput.value = '';
+  authPasswordInput.value = '';
+  setAuthTab('login');
+}
+
+function setAuthTab(mode) {
+  authMode = mode;
+  if (mode === 'login') {
+    tabLogin.classList.add('active');
+    tabRegister.classList.remove('active');
+    authSubmitBtn.textContent = '로그인';
+    authNoticeText.textContent = '기존 아이디와 비밀번호로 로그인하여 단어장을 복원합니다.';
+  } else {
+    tabLogin.classList.remove('active');
+    tabRegister.classList.add('active');
+    authSubmitBtn.textContent = '회원가입 및 동기화 시작';
+    authNoticeText.textContent = '새로운 아이디를 생성하면 현재 단어장이 클라우드/로컬에 영구 보존됩니다.';
+  }
+}
+
+async function handleAuthSubmit() {
+  const username = authUsernameInput.value.trim();
+  const password = authPasswordInput.value.trim();
+
+  if (!username || !password) {
+    showToast('⚠️ 아이디와 비밀번호를 모두 입력해주세요.');
+    return;
+  }
+
+  if (authMode === 'login') {
+    const res = await authManager.login(username, password);
+    if (res.ok) {
+      if (res.user.vocabList && res.user.vocabList.length > 0) {
+        vocabStorage.items = res.user.vocabList;
+        vocabStorage.save();
+      }
+      authModal.classList.remove('open');
+      showToast(`🎉 ${username}님 환영합니다! 단어장이 동기화되었습니다.`);
+    } else {
+      showToast(`❌ ${res.message}`);
+    }
+  } else {
+    // Register
+    const res = await authManager.register(username, password, vocabStorage.items, { tepsLevel: state.tepsLevel });
+    if (res.ok) {
+      authModal.classList.remove('open');
+      showToast(`🎉 계정이 생성되었습니다! 이제 다른 기기에서도 로그인하여 복원할 수 있습니다.`);
+    } else {
+      showToast(`❌ ${res.message}`);
+    }
+  }
+}
+
+// ==========================================================================
+// Toast Notifications
+// ==========================================================================
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<span>${message}</span>`;
+  toastContainer.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(-10px)';
+    toast.style.transition = 'all 0.3s ease';
+    setTimeout(() => toast.remove(), 300);
+  }, 2800);
+}
+
+// ==========================================================================
+// Event Bindings
+// ==========================================================================
+function bindEvents() {
+  themeToggleBtn.addEventListener('click', toggleTheme);
+  userSyncBtn.addEventListener('click', openAccountModal);
+
+  closeAuthModalBtn.addEventListener('click', () => authModal.classList.remove('open'));
+  tabLogin.addEventListener('click', () => setAuthTab('login'));
+  tabRegister.addEventListener('click', () => setAuthTab('register'));
+  authSubmitBtn.addEventListener('click', handleAuthSubmit);
+
+  authPasswordInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') handleAuthSubmit();
+  });
+
+  authModal.addEventListener('click', (e) => {
+    if (e.target === authModal) authModal.classList.remove('open');
+  });
+
+  brandResetBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    heroSection.classList.remove('compact');
+    wordInput.value = '';
+    clearInputBtn.classList.remove('visible');
+    activeWordSection.style.display = 'none';
+    sentencesSection.style.display = 'none';
+    state.currentWord = null;
+    hideWordPopover();
+  });
+
+  prevLevelBtn.addEventListener('click', () => stepLevel(-1));
+  nextLevelBtn.addEventListener('click', () => stepLevel(1));
+  levelChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const level = parseInt(chip.getAttribute('data-level'), 10);
+      setLevel(level);
+    });
+  });
+
+  searchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const word = wordInput.value.trim();
+    if (word) executeSearch(word, true);
+  });
+
+  wordInput.addEventListener('input', () => {
+    if (wordInput.value.trim().length > 0) {
+      clearInputBtn.classList.add('visible');
+    } else {
+      clearInputBtn.classList.remove('visible');
+    }
+  });
+
+  clearInputBtn.addEventListener('click', () => {
+    wordInput.value = '';
+    clearInputBtn.classList.remove('visible');
+    wordInput.focus();
+  });
+
+  suggestChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const word = chip.getAttribute('data-word');
+      executeSearch(word, true);
+    });
+  });
+
+  playAudioBtn.addEventListener('click', () => {
+    if (state.currentWord) playAudio(state.currentWord);
+  });
+
+  addToNotebookBtn.addEventListener('click', async () => {
+    if (state.currentWord && state.currentWordMeta) {
+      vocabStorage.addWord(state.currentWord, state.currentWordMeta);
+      showToast(`'${state.currentWord}' (${state.currentWordMeta.kr}) 단어장에 저장되었습니다.`);
+    }
+  });
+
+  regenerateBtn.addEventListener('click', () => {
+    if (state.currentWord) {
+      showToast('새로운 텝스 예문 5개를 생성합니다.');
+      executeSearch(state.currentWord, false);
+    }
+  });
+
+  revealAllKrBtn.addEventListener('click', () => {
+    const krBoxes = document.querySelectorAll('.sentence-kr-box');
+    const allRevealed = Array.from(krBoxes).every(box => box.getAttribute('data-revealed') === 'true');
+
+    krBoxes.forEach(box => {
+      const hint = box.querySelector('.kr-toggle-hint');
+      const text = box.querySelector('.sentence-kr-text');
+      if (allRevealed) {
+        box.setAttribute('data-revealed', 'false');
+        hint.style.display = 'flex';
+        text.style.display = 'none';
+      } else {
+        box.setAttribute('data-revealed', 'true');
+        hint.style.display = 'none';
+        text.style.display = 'block';
+      }
+    });
+  });
+
+  notebookTabHandle.addEventListener('click', toggleNotebook);
+
+  openSettingsBtn.addEventListener('click', () => {
+    apiKeyInput.value = state.apiKey;
+    settingsModal.classList.add('open');
+  });
+
+  closeSettingsBtn.addEventListener('click', () => {
+    settingsModal.classList.remove('open');
+  });
+
+  settingsModal.addEventListener('click', (e) => {
+    if (e.target === settingsModal) settingsModal.classList.remove('open');
+  });
+
+  saveSettingsBtn.addEventListener('click', () => {
+    state.apiKey = apiKeyInput.value.trim();
+    saveCurrentSettings();
+    settingsModal.classList.remove('open');
+    showToast('설정이 저장되었습니다.');
+  });
+
+  clearAllVocabBtn.addEventListener('click', () => {
+    if (confirm('정말로 단어장의 모든 단어를 비우시겠습니까?')) {
+      vocabStorage.clearAll();
+      settingsModal.classList.remove('open');
+      showToast('단어장이 초기화되었습니다.');
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!wordPopover.contains(e.target) && !e.target.closest('.token-word')) {
+      hideWordPopover();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      hideWordPopover();
+      settingsModal.classList.remove('open');
+      authModal.classList.remove('open');
+      if (state.notebookOpen) toggleNotebook();
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+})();
+
+</script>
+</body>
+</html>
